@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>REINKARNAILS | Luxury Press-on Nails</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* --- 1. CORE SETTINGS --- */
+        html { scroll-behavior: smooth; }
+        
+        :root {
+            /* DARK MODE (DEFAULT) */
+            --bg-body: #050505;
+            --bg-panel: #0F0F0F;
+            --bg-nav: rgba(5,5,5,0.8);
+            --text-main: #F0F0F0;
+            --text-muted: #888;
+            --border-color: #222;
+            --card-border: rgba(255,255,255,0.1);
+            --card-bg: rgba(255,255,255,0.03);
+            
+            --gold-primary: #D4AF37;
+            --gold-soft: #E5C565;
+            
+            --font-display: 'Cinzel', serif;
+            --font-body: 'Jost', sans-serif;
+            --nav-height: 70px;
+        }
+
+        /* LIGHT MODE */
+        [data-theme="light"] {
+            --bg-body: #F9F7F2; 
+            --bg-panel: #FFFFFF;
+            --bg-nav: rgba(249, 247, 242, 0.9);
+            --text-main: #1A1A1A;
+            --text-muted: #555;
+            --border-color: #E0E0E0;
+            --card-border: rgba(0,0,0,0.05);
+            --card-bg: #FFFFFF;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
+        
+        /* PAGE LOAD ANIMATION (Fade In Only) */
+        body {
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            font-family: var(--font-body);
+            overflow-x: hidden;
+            width: 100%;
+            line-height: 1.6;
+            opacity: 0; /* Mulai invisible */
+            transition: opacity 1.2s ease, background-color 0.4s ease, color 0.4s ease;
+        }
+        
+        /* Class ini ditambahkan via JS saat load selesai */
+        body.loaded { opacity: 1; }
+
+        /* GRAIN TEXTURE */
+        [data-theme="dark"] body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none; z-index: 9999;
+        }
+
+        section { scroll-margin-top: var(--nav-height); }
+
+        /* --- TYPOGRAPHY --- */
+        h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
+        .text-gold { color: var(--gold-primary); }
+        .section-header { text-align: center; margin: 80px 0 50px; position: relative; padding: 0 20px; }
+        .section-header h2 { font-size: 2rem; margin-bottom: 10px; }
+        .section-header p { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 3px; color: var(--text-muted); }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
+        
+        .btn {
+            padding: 14px 40px; border: 1px solid var(--gold-primary); background: transparent;
+            color: var(--gold-primary); text-transform: uppercase; letter-spacing: 2px;
+            font-size: 0.75rem; text-decoration: none; transition: 0.4s; display: inline-block;
+            cursor: pointer; position: relative; z-index: 5;
+        }
+        .btn:hover { background: var(--gold-primary); color: #fff; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
+            position: fixed; width: 100%; top: 0; z-index: 1000; height: var(--nav-height);
+            background: var(--bg-nav); backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--card-border); transition: 0.3s;
+        }
+        .logo { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 3px; color: var(--text-main); }
+        .nav-right { display: flex; align-items: center; gap: 30px; }
+        .nav-links { display: flex; gap: 30px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--gold-primary); }
+        .settings-group { display: flex; gap: 15px; align-items: center; margin-left: 20px; border-left: 1px solid var(--border-color); padding-left: 20px; }
+        .setting-btn { background: none; border: none; cursor: pointer; color: var(--text-main); font-size: 1rem; transition: 0.3s; font-family: var(--font-body); font-weight: 500; }
+        .setting-btn:hover { color: var(--gold-primary); }
+        .lang-switch { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .menu-btn { display: none; color: var(--text-main); font-size: 1.4rem; cursor: pointer; }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            position: relative; overflow: hidden;
+            background-image: url('https://images.pexels.com/photos/6168216/pexels-photo-6168216.jpeg?q=80&w=1974&auto=format&fit=crop');
+            background-size: cover; background-position: center; background-attachment: fixed;
+        }
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg-body)); }
+        
+        /* Hero Animation */
+        .hero-content { position: relative; z-index: 2; transform: translateY(30px); opacity: 0; transition: 1.5s ease-out; }
+        body.loaded .hero-content { transform: translateY(0); opacity: 1; }
+
+        .hero-subtitle { font-family: var(--font-body); letter-spacing: 5px; font-size: 0.8rem; margin-bottom: 20px; display: block; color: var(--text-main); }
+        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 40px; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        [data-theme="light"] .hero h1 { color: #fff; } 
+
+        /* --- SHOWCASE --- */
+        .showcase { padding: 100px 0; display: flex; align-items: center; justify-content: center; gap: 50px; }
+        .showcase-img { width: 400px; height: 500px; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: 0.5s; }
+        .showcase-img:hover { filter: grayscale(0%); }
+        .showcase-text { max-width: 400px; }
+        .showcase-text h2 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.2; }
+        .showcase-text p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+
+        /* --- CATALOG (SCROLL REVEAL ANIMATION) --- */
+        .catalog-section { padding-bottom: 100px; }
+        .grid-products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; }
+        
+        /* Animasi Card saat muncul */
+        .card { 
+            cursor: pointer; position: relative; background: var(--bg-panel); border: 1px solid var(--card-border); 
+            opacity: 0; transform: translateY(40px); transition: 0.8s ease-out; /* Smooth slide up */
+        }
+        .reveal.active { opacity: 1; transform: translateY(0); } /* State aktif */
+
+        .card:nth-child(even) { margin-top: 60px; }
+        .card-img-wrapper { width: 100%; aspect-ratio: 3/4; overflow: hidden; margin-bottom: 15px; position: relative; }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .card:hover .card-img { transform: scale(1.1); }
+        .card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+        .card:hover .card-overlay { opacity: 1; }
+        .view-btn { border: 1px solid #fff; color: #fff; padding: 10px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
+        .card-info { text-align: left; padding: 15px; }
+        .card-title { font-size: 1rem; color: var(--text-main); margin-bottom: 5px; }
+        .card-price { color: var(--gold-soft); font-size: 0.9rem; font-weight: 500; }
+        [data-theme="light"] .card-price { color: #AA771C; font-weight: 600; }
+
+        /* --- PRICE LIST --- */
+        .pricelist { background: var(--bg-panel); padding: 80px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
+        .price-container { max-width: 700px; margin: 0 auto; background: var(--bg-body); padding: 40px; border: 1px solid var(--border-color); }
+        .price-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border-color); padding: 15px 0; color: var(--text-muted); transition: 0.3s; }
+        .price-row:hover { color: var(--text-main); padding-left: 10px; border-color: var(--text-muted); }
+        .price-name { font-size: 0.95rem; font-weight: 400; color: var(--text-main); }
+        .price-desc { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+        .price-val { font-family: var(--font-display); color: var(--gold-primary); font-weight: 700; }
+        [data-theme="light"] .price-val { color: #AA771C; }
+        .toolkit-box { margin-top: 30px; border: 1px solid var(--gold-primary); padding: 20px; text-align: center; background: rgba(212, 175, 55, 0.05); }
+        .toolkit-title { color: var(--gold-primary); margin-bottom: 5px; font-family: var(--font-display); }
+        [data-theme="light"] .toolkit-title { color: #AA771C; }
+        .toolkit-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+
+        /* --- HOW TO ORDER --- */
+        .howto { padding: 100px 0; }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 50px; }
+        
+        /* Animasi Step Card juga */
+        .step-card { 
+            background: var(--bg-panel); padding: 30px; border: 1px solid var(--border-color); text-align: left; position: relative; transition: 0.3s; 
+            opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s, transform 0.3s;
+        }
+        .step-card.reveal.active { opacity: 1; transform: translateY(0); }
+        .step-card:hover { border-color: var(--gold-primary); transform: translateY(-5px) !important; /* Force hover effect */ }
+        
+        .step-num { font-family: var(--font-display); font-size: 3rem; color: var(--border-color); position: absolute; top: 10px; right: 20px; font-weight: 800; opacity: 0.3; }
+        .step-icon { font-size: 1.5rem; color: var(--gold-primary); margin-bottom: 20px; display: inline-block; }
+        .step-title { font-size: 1rem; color: var(--text-main); margin-bottom: 10px; font-weight: 500; text-transform: uppercase; }
+        .step-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+
+        /* --- FOOTER --- */
+        footer { border-top: 1px solid var(--border-color); padding: 60px 0 30px; background: var(--bg-panel); text-align: center; }
+        .socials { margin: 30px 0; }
+        .socials a { color: var(--text-main); margin: 0 15px; font-size: 1.2rem; text-decoration: none; transition: 0.3s; display: inline-block; }
+        .socials a:hover { color: var(--gold-primary); transform: translateY(-3px); }
+
+        /* --- FLOATING WA --- */
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 999; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; }
+        .wa-float:hover { transform: translateY(-5px); }
+
+        /* --- MODAL --- */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .modal.active { display: flex; animation: fadeUp 0.4s ease; }
+        .modal-box { background: var(--bg-panel); width: 90%; max-width: 900px; display: flex; border: 1px solid var(--border-color); }
+        .modal-gallery { width: 50%; background: #000; position: relative; overflow: hidden; }
+        .modal-gallery img { width: 100%; height: 100%; object-fit: cover; position: absolute; opacity: 0; transition: 0.5s; }
+        .modal-gallery img.active { opacity: 1; }
+        .modal-info { padding: 40px; width: 50%; display: flex; flex-direction: column; justify-content: center; }
+        .close-btn { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 1.5rem; cursor: pointer; z-index: 10; }
+        .modal-info h2 { color: var(--text-main); }
+        [data-theme="light"] .close-btn { color: #000; }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .hero { background-attachment: scroll; }
+            .hero h1 { font-size: 2.5rem; }
+            .navbar { padding: 0 20px; }
+            .nav-links { position: fixed; top: 0; right: 0; width: 100%; height: 100vh; background: var(--bg-body); flex-direction: column; justify-content: center; align-items: center; gap: 30px; transform: translateX(100%); transition: 0.4s; border-left: 1px solid var(--border-color); }
+            .nav-links.active { transform: translateX(0); }
+            .menu-btn { display: block; }
+            .settings-group { margin-right: 15px; border-left: none; padding-left: 0; }
+            .showcase { flex-direction: column; padding: 60px 20px; gap: 30px; text-align: center; }
+            .showcase-img { width: 100%; height: 350px; }
+            .showcase-text h2 { font-size: 1.8rem; }
+            .grid-products { gap: 10px; }
+            .card:nth-child(even) { margin-top: 30px; }
+            .modal-box { flex-direction: column; height: 90vh; overflow-y: auto; }
+            .modal-gallery { width: 100%; height: 300px; min-height: 300px; }
+            .modal-info { width: 100%; padding: 25px; height: auto; }
+            .wa-float { width: 50px; height: 50px; font-size: 24px; bottom: 20px; right: 20px; }
+            .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">REINKAR<span>NAILS</span></div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#home" data-i18n="nav_home">Home</a></li>
+                <li><a href="#catalog" data-i18n="nav_col">Collection</a></li>
+                <li><a href="#pricelist" data-i18n="nav_price">Pricelist</a></li>
+                <li><a href="#howto" data-i18n="nav_howto">Cara Order</a></li>
+            </ul>
+            <div class="settings-group">
+                <button class="setting-btn" id="themeToggle" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
+                <button class="setting-btn lang-switch" onclick="toggleLanguage()"><span id="langText">EN</span></button>
+            </div>
+            <div class="menu-btn"><i class="fa-solid fa-bars"></i></div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <span class="hero-subtitle">EST. 2026</span>
+            <h1 data-i18n="hero_title">The Art of<br><span class="text-gold">Rebirth</span></h1>
+            <a href="#catalog" class="btn" data-i18n="hero_btn">Lihat Katalog</a>
+        </div>
+    </section>
+
+    <section class="showcase">
+        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=1974&auto=format&fit=crop" class="showcase-img" alt="Luxury Nails">
+        <div class="showcase-text">
+            <h2 data-i18n="showcase_title">Handcrafted<br><span class="text-gold">Perfection</span></h2>
+            <p data-i18n="showcase_desc">Setiap set kuku dibuat manual dengan detail presisi. Kami menggabungkan seni lukis tangan dan material premium untuk menciptakan aksesori yang tak lekang oleh waktu.</p>
+        </div>
+    </section>
+
+    <section id="catalog" class="catalog-section">
+        <div class="section-header">
+            <p data-i18n="cat_subtitle">LATEST DROP</p>
+            <h2>Signature <span class="text-gold">Series</span></h2>
+        </div>
+        <div class="container">
+            <div class="grid-products" id="gridProducts"></div>
+        </div>
+    </section>
+
+    <section id="pricelist" class="pricelist">
+        <div class="container">
+            <div class="section-header" style="margin-top: 0;">
+                <h2 data-i18n="price_title">Price List</h2>
+                <p data-i18n="price_sub">Harga belum termasuk ongkir</p>
+            </div>
+            <div class="price-container">
+                <div class="price-row"><div><span class="price-name" data-i18n="item_1_name">Fake Nails Polos</span><span class="price-desc" data-i18n="item_1_desc">Satu warna (Glossy/Matte)</span></div><span class="price-val">20k</span></div>
+                <div class="price-row"><div><span class="price-name" data-i18n="item_2_name">Fake Nails 2D</span><span class="price-desc" data-i18n="item_2_desc">Marble, Glitter, French, Sticker, Art, Foil</span></div><span class="price-val">40k - 45k</span></div>
+                <div class="price-row"><div><span class="price-name" data-i18n="item_3_name">Fake Nails Cat Eye</span><span class="price-desc" data-i18n="item_3_desc">Efek magnetik berkilau</span></div><span class="price-val">50k</span></div>
+                <div class="price-row"><div><span class="price-name" data-i18n="item_4_name">Cat Eye + Art</span><span class="price-desc" data-i18n="item_4_desc">Kombinasi efek magnet & nail art</span></div><span class="price-val">55k</span></div>
+                <div class="price-row"><div><span class="price-name" data-i18n="item_5_name">Fake Nails 3D</span><span class="price-desc" data-i18n="item_5_desc">Tergantung banyaknya aksesoris 3D</span></div><span class="price-val">50k - 70k</span></div>
+                <div style="margin: 20px 0; font-size: 0.9rem; color: var(--text-main); font-style: italic; border-left: 2px solid var(--gold-primary); padding-left: 15px;">* <span data-i18n="price_note">Free 12pcs Lem Sticker setiap pembelian.</span></div>
+                <div class="toolkit-box"><h4 class="toolkit-title">Toolkit 5in1 (+5k)</h4><p class="toolkit-desc" data-i18n="toolkit_desc">Lem Cair, Lem Sticker 24pcs, Kikir, Alcohol Swab, Stick</p><a href="https://wa.me/6281234567890?text=Saya%20mau%20tambah%20Toolkit%205in1" class="btn" style="padding: 8px 20px; font-size: 0.7rem;" data-i18n="btn_add">Tambah ke Order</a></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="howto" class="howto">
+        <div class="container">
+            <div class="section-header">
+                <h2 data-i18n="howto_title">How to <span class="text-gold">Order</span></h2>
+                <p data-i18n="howto_sub">Ikuti langkah mudah berikut</p>
+            </div>
+            <div class="steps-grid">
+                <div class="step-card reveal"><span class="step-num">01</span><i class="fa-brands fa-whatsapp step-icon"></i><h4 class="step-title" data-i18n="step1_title">Konsultasi</h4><p class="step-text" data-i18n="step1_desc">Chat melalui DM Instagram atau WhatsApp. Sertakan gambar referensi model art atau deskripsikan desain impianmu.</p></div>
+                <div class="step-card reveal"><span class="step-num">02</span><i class="fa-solid fa-camera step-icon"></i><h4 class="step-title" data-i18n="step2_title">Ukur dengan Koin</h4><p class="step-text" data-i18n="step2_desc">Kirim <strong>foto jari tangan dengan meletakkan uang koin</strong> di sebelahnya. Ini agar ukuran kuku pas & akurat.</p></div>
+                <div class="step-card reveal"><span class="step-num">03</span><i class="fa-solid fa-cart-shopping step-icon"></i><h4 class="step-title" data-i18n="step3_title">Checkout</h4><p class="step-text" data-i18n="step3_desc">Jika pesanan sudah disetujui (ACC), admin akan mengirimkan <strong>Link Shopee</strong> untuk memudahkan transaksi.</p></div>
+                <div class="step-card reveal"><span class="step-num">04</span><i class="fa-solid fa-check-double step-icon"></i><h4 class="step-title" data-i18n="step4_title">Konfirmasi</h4><p class="step-text" data-i18n="step4_desc">Setelah Checkout (CO), segera konfirmasi Nama, Alamat, dan Nomor Pesanan ke admin.</p></div>
+                <div class="step-card reveal"><span class="step-num">05</span><i class="fa-solid fa-clock step-icon"></i><h4 class="step-title" data-i18n="step5_title">Produksi (PO)</h4><p class="step-text" data-i18n="step5_desc">Sistem Pre-Order 7 hari. Pengiriman dilakukan 2-3 hari setelah pengerjaan selesai.</p></div>
+            </div>
+            <div style="text-align: center; margin-top: 60px;"><a href="https://wa.me/6281234567890" target="_blank" class="btn" id="waBtn"><i class="fa-brands fa-whatsapp" style="margin-right:8px;"></i> <span data-i18n="btn_consult">Mulai Konsultasi</span></a></div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 15px;">REINKARNAILS</h3>
+            <div class="socials">
+                <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://shopee.co.id/reinkarnails" target="_blank"><i class="fa-solid fa-bag-shopping"></i></a>
+                <a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+            <p style="font-size: 0.7rem; color: var(--text-muted);">&copy; 2026. Made in Indonesia.</p>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/6281234567890" class="wa-float" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+
+    <div class="modal" id="productModal">
+        <div class="modal-box">
+            <span class="close-btn">&times;</span>
+            <div class="modal-gallery" id="modalGallery"></div>
+            <div class="modal-info">
+                <h2 id="mTitle" style="font-size: 1.8rem; margin-bottom: 5px; line-height: 1.2;"></h2>
+                <p id="mPrice" style="color: var(--gold-primary); font-size: 1.2rem; margin-bottom: 20px;"></p>
+                <p id="mDesc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px;"></p>
+                <a href="#" id="waLink" class="btn" style="width: 100%; text-align: center;" data-i18n="btn_order_wa">Order on WhatsApp</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- 0. PAGE LOAD ANIMATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('loaded');
+        });
+
+        // --- 1. LANGUAGE DATA ---
+        const translations = {
+            id: {
+                nav_home: "Beranda", nav_col: "Koleksi", nav_price: "Harga", nav_howto: "Cara Pesan",
+                hero_title: `Tampil Mewah<br><span class="text-gold">Seketika</span>`,
+                hero_btn: "Lihat Katalog",
+                showcase_title: `Handcrafted<br><span class="text-gold">Perfection</span>`,
+                showcase_desc: "Setiap set kuku dibuat manual dengan detail presisi. Kami menggabungkan seni lukis tangan dan material premium untuk menciptakan aksesori yang tak lekang oleh waktu.",
+                cat_subtitle: "TERBARU",
+                price_title: "Daftar Harga",
+                price_sub: "Harga belum termasuk ongkir",
+                item_1_name: "Fake Nails Polos", item_1_desc: "Satu warna (Glossy/Matte)",
+                item_2_name: "Fake Nails 2D", item_2_desc: "Marble, Glitter, French, Sticker, Art, Foil",
+                item_3_name: "Fake Nails Cat Eye", item_3_desc: "Efek magnetik berkilau",
+                item_4_name: "Cat Eye + Art", item_4_desc: "Kombinasi efek magnet & nail art",
+                item_5_name: "Fake Nails 3D", item_5_desc: "Tergantung banyaknya aksesoris 3D",
+                price_note: "Free 12pcs Lem Sticker setiap pembelian.",
+                toolkit_desc: "Lem Cair, Lem Sticker 24pcs, Kikir, Alcohol Swab, Stick",
+                btn_add: "Tambah ke Order",
+                howto_title: `Cara <span class="text-gold">Order</span>`,
+                howto_sub: "Ikuti langkah mudah berikut",
+                step1_title: "Konsultasi", step1_desc: "Chat melalui DM Instagram atau WhatsApp. Sertakan gambar referensi model art atau deskripsikan desain impianmu.",
+                step2_title: "Ukur dengan Koin", step2_desc: "Kirim <strong>foto jari tangan dengan meletakkan uang koin</strong> di sebelahnya. Ini agar ukuran kuku pas & akurat.",
+                step3_title: "Checkout", step3_desc: "Jika pesanan sudah disetujui (ACC), admin akan mengirimkan <strong>Link Shopee</strong> untuk memudahkan transaksi.",
+                step4_title: "Konfirmasi", step4_desc: "Setelah Checkout (CO), segera konfirmasi Nama, Alamat, dan Nomor Pesanan ke admin.",
+                step5_title: "Produksi (PO)", step5_desc: "Sistem Pre-Order 7 hari. Pengiriman dilakukan 2-3 hari setelah pengerjaan selesai.",
+                btn_consult: "Mulai Konsultasi",
+                btn_order_wa: "Pesan via WhatsApp"
+            },
+            en: {
+                nav_home: "Home", nav_col: "Collection", nav_price: "Price List", nav_howto: "How to Order",
+                hero_title: `Instant Luxury<br><span class="text-gold">Makeover</span>`,
+                hero_btn: "View Catalog",
+                showcase_title: `Handcrafted<br><span class="text-gold">Perfection</span>`,
+                showcase_desc: "Each set is handmade with precise detail. We combine hand-painting techniques with premium materials to create timeless accessories.",
+                cat_subtitle: "LATEST DROP",
+                price_title: "Price List",
+                price_sub: "Shipping not included",
+                item_1_name: "Solid Color", item_1_desc: "Single color (Glossy/Matte)",
+                item_2_name: "2D Art Series", item_2_desc: "Marble, Glitter, French, Sticker, Art, Foil",
+                item_3_name: "Cat Eye Series", item_3_desc: "Shimmering magnetic effect",
+                item_4_name: "Cat Eye + Art", item_4_desc: "Magnetic effect combined with art",
+                item_5_name: "3D Art Series", item_5_desc: "Depends on amount of 3D accessories",
+                price_note: "Free 12pcs Sticker Glue included.",
+                toolkit_desc: "Liquid Glue, 24pcs Sticker Glue, File, Alcohol Swab, Stick",
+                btn_add: "Add to Order",
+                howto_title: `How to <span class="text-gold">Order</span>`,
+                howto_sub: "Follow these simple steps",
+                step1_title: "Consultation", step1_desc: "Chat via Instagram DM or WhatsApp. Send a reference image of the art model or describe your dream design.",
+                step2_title: "Measure with Coin", step2_desc: "Send a <strong>photo of your fingers next to a coin</strong>. This ensures accurate sizing.",
+                step3_title: "Checkout", step3_desc: "If order is approved (ACC), admin will send a <strong>Shopee Link</strong> for easy transaction.",
+                step4_title: "Confirm", step4_desc: "After Checkout (CO), immediately confirm Name, Address, and Order Number to admin.",
+                step5_title: "Production (PO)", step5_desc: "Pre-Order system 7 days. Shipping done 2-3 days after production finishes.",
+                btn_consult: "Start Consultation",
+                btn_order_wa: "Order on WhatsApp"
+            }
+        };
+
+        let currentLang = localStorage.getItem('lang') || 'id';
+        let currentTheme = localStorage.getItem('theme') || 'dark';
+
+        // --- 2. THEME & LANG LOGIC ---
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', theme);
+            const icon = document.getElementById('themeIcon');
+            if(theme === 'light') {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        function toggleTheme() {
+            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            applyTheme(currentTheme);
+        }
+
+        function applyLanguage(lang) {
+            const elements = document.querySelectorAll('[data-i18n]');
+            elements.forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+            document.getElementById('langText').innerText = lang === 'id' ? 'EN' : 'ID';
+            localStorage.setItem('lang', lang);
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'id' ? 'en' : 'id';
+            applyLanguage(currentLang);
+            document.documentElement.lang = currentLang;
+        }
+
+        applyTheme(currentTheme);
+        applyLanguage(currentLang);
+
+        // --- 3. SCROLL REVEAL ANIMATION (Tanpa Blur) ---
+        window.addEventListener('scroll', () => {
+            const reveals = document.querySelectorAll('.reveal');
+            reveals.forEach(r => {
+                if(r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add('active');
+            });
+        });
+
+        // --- 4. DATA & MODAL ---
+        const products = [
+            { id: 1, name: "Black Phoenix", price: 55000, desc: "Cat Eye + Art Series: Nuansa hitam pekat dengan sentuhan gold foil asli.", img: ["https://images.pexels.com/photos/5569944/pexels-photo-5569944.jpeg?w=600","https://images.pexels.com/photos/3997344/pexels-photo-3997344.jpeg?w=600"] },
+            { id: 2, name: "Golden Hour", price: 50000, desc: "Cat Eye Series: Efek magnetik yang berkilau hidup saat terkena pantulan cahaya.", img: ["https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600","https://images.pexels.com/photos/4661289/pexels-photo-4661289.jpeg?w=600"] },
+            { id: 3, name: "Noir 3D", price: 65000, desc: "3D Art Series: Desain timbul dengan aksen emas minimalis.", img: ["https://images.pexels.com/photos/5871817/pexels-photo-5871817.jpeg?w=600","https://images.pexels.com/photos/3354511/pexels-photo-3354511.jpeg?w=600"] },
+            { id: 4, name: "Ruby Dust", price: 45000, desc: "2D Series: Merah marun mewah dengan taburan glitter halus.", img: ["https://images.pexels.com/photos/756670/pexels-photo-756670.jpeg?w=600","https://images.pexels.com/photos/7020085/pexels-photo-7020085.jpeg?w=600"] }
+        ];
+
+        const grid = document.getElementById('gridProducts');
+        grid.innerHTML = products.map(p => `
+            <div class="card reveal" onclick="openModal(${p.id})">
+                <div class="card-img-wrapper">
+                    <img src="${p.img[0]}" class="card-img" alt="${p.name}">
+                    <div class="card-overlay"><span class="view-btn">QUICK VIEW</span></div>
+                </div>
+                <div class="card-info"><h3 class="card-title">${p.name}</h3><span class="card-price">Rp ${p.price.toLocaleString()}</span></div>
+            </div>
+        `).join('');
+
+        const modal = document.getElementById('productModal');
+        const menuBtn = document.querySelector('.menu-btn');
+        const nav = document.querySelector('.nav-links');
+        const icon = menuBtn.querySelector('i');
+        let slideInterval;
+
+        function openModal(id) {
+            const p = products.find(x => x.id === id);
+            document.getElementById('mTitle').innerText = p.name;
+            document.getElementById('mPrice').innerText = "Rp " + p.price.toLocaleString();
+            document.getElementById('mDesc').innerText = p.desc;
+            document.getElementById('waLink').href = `https://wa.me/6281234567890?text=Halo%20Reinkarnails,%20saya%20mau%20order%20${p.name}`;
+            const gallery = document.getElementById('modalGallery');
+            gallery.innerHTML = '';
+            p.img.forEach((src, i) => {
+                const img = document.createElement('img'); img.src = src;
+                if(i===0) img.classList.add('active'); gallery.appendChild(img);
+            });
+            modal.classList.add('active');
+            if(slideInterval) clearInterval(slideInterval);
+            slideInterval = setInterval(() => {
+                const imgs = gallery.querySelectorAll('img'); if(!imgs.length) return;
+                let activeI = 0; imgs.forEach((img, i) => { if(img.classList.contains('active')) activeI = i; img.classList.remove('active'); });
+                imgs[(activeI+1)%imgs.length].classList.add('active');
+            }, 2500);
+        }
+
+        document.querySelector('.close-btn').onclick = () => { modal.classList.remove('active'); clearInterval(slideInterval); };
+        window.onclick = (e) => { if(e.target == modal) { modal.classList.remove('active'); clearInterval(slideInterval); }};
+        menuBtn.onclick = () => { nav.classList.toggle('active'); icon.classList.toggle('fa-xmark'); icon.classList.toggle('fa-bars'); }
+        document.querySelectorAll('.nav-links a').forEach(a => { a.onclick = () => { nav.classList.remove('active'); icon.classList.remove('fa-xmark'); icon.classList.add('fa-bars'); }});
+    </script>
+</body>
+</html>
