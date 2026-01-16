@@ -19,12 +19,12 @@
             /* DARK MODE (DEFAULT) */
             --bg-body: #050505;
             --bg-panel: #0F0F0F;
-            --bg-nav: rgba(5,5,5,0.8);
+            --bg-nav: rgba(5,5,5,0.85);
             --text-main: #F0F0F0;
             --text-muted: #888;
             --border-color: #222;
-            --card-border: rgba(255,255,255,0.1);
-            --card-bg: rgba(255,255,255,0.03);
+            --card-border: rgba(255,255,255,0.08);
+            --card-bg: rgba(255,255,255,0.02);
             
             --gold-primary: #D4AF37;
             --gold-soft: #E5C565;
@@ -32,205 +32,233 @@
             --font-display: 'Cinzel', serif;
             --font-body: 'Jost', sans-serif;
             --nav-height: 70px;
+            --promo-height: 35px; /* Tinggi Promo Bar */
         }
 
         /* LIGHT MODE */
         [data-theme="light"] {
             --bg-body: #F9F7F2; 
             --bg-panel: #FFFFFF;
-            --bg-nav: rgba(249, 247, 242, 0.9);
+            --bg-nav: rgba(249, 247, 242, 0.95);
             --text-main: #1A1A1A;
-            --text-muted: #555;
+            --text-muted: #666;
             --border-color: #E0E0E0;
-            --card-border: rgba(0,0,0,0.05);
+            --card-border: rgba(0,0,0,0.08);
             --card-bg: #FFFFFF;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; outline: none; -webkit-tap-highlight-color: transparent; }
         
-        /* PAGE LOAD ANIMATION (Fade In Only) */
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
             font-family: var(--font-body);
             overflow-x: hidden;
             width: 100%;
-            line-height: 1.6;
-            opacity: 0; /* Mulai invisible */
+            line-height: 1.5;
+            opacity: 0;
             transition: opacity 1.2s ease, background-color 0.4s ease, color 0.4s ease;
+            padding-top: var(--promo-height); /* Geser body ke bawah utk promo bar */
         }
         
-        /* Class ini ditambahkan via JS saat load selesai */
         body.loaded { opacity: 1; }
 
-        /* GRAIN TEXTURE */
         [data-theme="dark"] body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
             pointer-events: none; z-index: 9999;
         }
 
-        section { scroll-margin-top: var(--nav-height); }
+        section { scroll-margin-top: calc(var(--nav-height) + var(--promo-height)); }
 
         /* --- TYPOGRAPHY --- */
         h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
         .text-gold { color: var(--gold-primary); }
-        .section-header { text-align: center; margin: 80px 0 50px; position: relative; padding: 0 20px; }
-        .section-header h2 { font-size: 2rem; margin-bottom: 10px; }
+        .section-header { text-align: center; margin: 80px 0 40px; position: relative; padding: 0 20px; }
+        .section-header h2 { font-size: 2rem; margin-bottom: 5px; }
         .section-header p { font-family: var(--font-display); font-size: 0.8rem; letter-spacing: 3px; color: var(--text-muted); }
 
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; position: relative; z-index: 2; }
         
         .btn {
-            padding: 14px 40px; border: 1px solid var(--gold-primary); background: transparent;
+            padding: 12px 30px; border: 1px solid var(--gold-primary); background: transparent;
             color: var(--gold-primary); text-transform: uppercase; letter-spacing: 2px;
-            font-size: 0.75rem; text-decoration: none; transition: 0.4s; display: inline-block;
+            font-size: 0.7rem; text-decoration: none; transition: 0.4s; display: inline-block;
             cursor: pointer; position: relative; z-index: 5;
         }
-        .btn:hover { background: var(--gold-primary); color: #fff; box-shadow: 0 0 20px rgba(212, 175, 55, 0.3); }
+        .btn:hover { background: var(--gold-primary); color: #fff; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+
+        /* --- PROMO BAR (NEW) --- */
+        .promo-bar {
+            position: fixed; top: 0; left: 0; width: 100%; height: var(--promo-height);
+            background: var(--gold-primary); color: #000; z-index: 1100;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            overflow: hidden;
+        }
+        .promo-text { white-space: nowrap; animation: marquee 25s linear infinite; }
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
 
         /* --- NAVBAR --- */
         .navbar {
             display: flex; justify-content: space-between; align-items: center; padding: 0 5%;
-            position: fixed; width: 100%; top: 0; z-index: 1000; height: var(--nav-height);
-            background: var(--bg-nav); backdrop-filter: blur(12px);
+            position: fixed; width: 100%; top: var(--promo-height); z-index: 1000; height: var(--nav-height);
+            background: var(--bg-nav); backdrop-filter: blur(15px);
             border-bottom: 1px solid var(--card-border); transition: 0.3s;
         }
-        .logo { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 3px; color: var(--text-main); }
-        .nav-right { display: flex; align-items: center; gap: 30px; }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { color: var(--text-muted); text-decoration: none; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 2px; transition: 0.3s; }
+        .logo { font-family: var(--font-display); font-size: 1.3rem; letter-spacing: 2px; color: var(--text-main); font-weight: 700; }
+        .nav-right { display: flex; align-items: center; gap: 25px; }
+        .nav-links { display: flex; gap: 25px; list-style: none; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1.5px; transition: 0.3s; }
         .nav-links a:hover { color: var(--gold-primary); }
         .settings-group { display: flex; gap: 15px; align-items: center; margin-left: 20px; border-left: 1px solid var(--border-color); padding-left: 20px; }
-        .setting-btn { background: none; border: none; cursor: pointer; color: var(--text-main); font-size: 1rem; transition: 0.3s; font-family: var(--font-body); font-weight: 500; }
+        .setting-btn { background: none; border: none; cursor: pointer; color: var(--text-main); font-size: 1rem; transition: 0.3s; }
         .setting-btn:hover { color: var(--gold-primary); }
-        .lang-switch { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
+        .lang-switch { font-size: 0.7rem; font-family: var(--font-body); }
         .menu-btn { display: none; color: var(--text-main); font-size: 1.4rem; cursor: pointer; }
 
         /* --- HERO --- */
         .hero {
-            height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            height: 90vh; display: flex; align-items: center; justify-content: center; text-align: center;
             position: relative; overflow: hidden;
             background-image: url('https://images.pexels.com/photos/6168216/pexels-photo-6168216.jpeg?q=80&w=1974&auto=format&fit=crop');
             background-size: cover; background-position: center; background-attachment: fixed;
         }
-        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.2), var(--bg-body)); }
-        
-        /* Hero Animation */
+        .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.3), var(--bg-body)); }
         .hero-content { position: relative; z-index: 2; transform: translateY(30px); opacity: 0; transition: 1.5s ease-out; }
         body.loaded .hero-content { transform: translateY(0); opacity: 1; }
-
-        .hero-subtitle { font-family: var(--font-body); letter-spacing: 5px; font-size: 0.8rem; margin-bottom: 20px; display: block; color: var(--text-main); }
-        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 40px; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        [data-theme="light"] .hero h1 { color: #fff; } 
+        .hero-subtitle { letter-spacing: 5px; font-size: 0.8rem; margin-bottom: 15px; display: block; color: var(--text-main); }
+        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 30px; color: #fff; text-shadow: 0 10px 30px rgba(0,0,0,0.5); }
 
         /* --- SHOWCASE --- */
-        .showcase { padding: 100px 0; display: flex; align-items: center; justify-content: center; gap: 50px; }
-        .showcase-img { width: 400px; height: 500px; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: 0.5s; }
+        .showcase { padding: 80px 0; display: flex; align-items: center; justify-content: center; gap: 50px; }
+        .showcase-img { width: 350px; height: 450px; object-fit: cover; filter: grayscale(100%) contrast(1.2); transition: 0.5s; }
         .showcase-img:hover { filter: grayscale(0%); }
         .showcase-text { max-width: 400px; }
-        .showcase-text h2 { font-size: 2.2rem; margin-bottom: 20px; line-height: 1.2; }
-        .showcase-text p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; }
+        .showcase-text h2 { font-size: 2rem; margin-bottom: 15px; line-height: 1.2; }
+        .showcase-text p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 25px; }
 
-        /* --- CATALOG (SCROLL REVEAL ANIMATION) --- */
-        .catalog-section { padding-bottom: 100px; }
-        .grid-products { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; align-items: start; }
-        
-        /* Animasi Card saat muncul */
-        .card { 
-            cursor: pointer; position: relative; background: var(--bg-panel); border: 1px solid var(--card-border); 
-            opacity: 0; transform: translateY(40px); transition: 0.8s ease-out; /* Smooth slide up */
+        /* --- FEATURES SECTION (NEW) --- */
+        .features { padding: 40px 0 80px; text-align: center; border-bottom: 1px solid var(--border-color); }
+        .features-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; margin-top: 40px; }
+        .feature-item { padding: 20px; transition: 0.3s; }
+        .feature-item:hover { transform: translateY(-5px); }
+        .feature-icon { font-size: 1.8rem; color: var(--gold-primary); margin-bottom: 15px; }
+        .feature-title { font-size: 0.85rem; font-weight: 600; color: var(--text-main); margin-bottom: 8px; letter-spacing: 1px; }
+        .feature-desc { font-size: 0.75rem; color: var(--text-muted); line-height: 1.5; }
+
+        /* --- CATALOG & FILTER --- */
+        .catalog-section { padding: 100px 0; }
+        .filter-container { display: flex; justify-content: center; flex-wrap: wrap; gap: 15px; margin-bottom: 40px; }
+        .filter-btn { 
+            background: transparent; border: 1px solid var(--border-color); color: var(--text-muted);
+            padding: 8px 20px; font-family: var(--font-body); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; transition: 0.3s;
         }
-        .reveal.active { opacity: 1; transform: translateY(0); } /* State aktif */
+        .filter-btn:hover, .filter-btn.active { border-color: var(--gold-primary); color: var(--gold-primary); }
+        .filter-btn.active { background: rgba(212, 175, 55, 0.1); }
 
-        .card:nth-child(even) { margin-top: 60px; }
-        .card-img-wrapper { width: 100%; aspect-ratio: 3/4; overflow: hidden; margin-bottom: 15px; position: relative; }
-        .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .card:hover .card-img { transform: scale(1.1); }
-        .card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center; opacity: 0; transition: 0.3s; }
+        .grid-products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; align-items: start; }
+        .card { cursor: pointer; position: relative; background: transparent; opacity: 0; transform: translateY(20px); transition: 0.6s ease-out; }
+        .card.hidden { display: none; } 
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .card-img-wrapper { width: 100%; aspect-ratio: 4/5; overflow: hidden; margin-bottom: 12px; position: relative; background: var(--card-bg); }
+        .card-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .card:hover .card-img { transform: scale(1.05); }
+        .card-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.2); display: flex; align-items: flex-end; justify-content: center; opacity: 0; transition: 0.3s; padding-bottom: 20px; }
         .card:hover .card-overlay { opacity: 1; }
-        .view-btn { border: 1px solid #fff; color: #fff; padding: 10px 20px; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; }
-        .card-info { text-align: left; padding: 15px; }
-        .card-title { font-size: 1rem; color: var(--text-main); margin-bottom: 5px; }
-        .card-price { color: var(--gold-soft); font-size: 0.9rem; font-weight: 500; }
-        [data-theme="light"] .card-price { color: #AA771C; font-weight: 600; }
+        .view-btn { background: rgba(255,255,255,0.9); color: #000; padding: 10px 0; width: 80%; text-align: center; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 500; }
+        .card-info { text-align: left; padding: 0 5px; }
+        .card-title { font-size: 0.95rem; color: var(--text-main); margin-bottom: 4px; font-weight: 400; text-transform: capitalize; }
+        .card-category { color: var(--text-muted); font-size: 0.7rem; font-weight: 400; text-transform: uppercase; letter-spacing: 1px; }
 
         /* --- PRICE LIST --- */
         .pricelist { background: var(--bg-panel); padding: 80px 0; border-top: 1px solid var(--border-color); border-bottom: 1px solid var(--border-color); }
         .price-container { max-width: 700px; margin: 0 auto; background: var(--bg-body); padding: 40px; border: 1px solid var(--border-color); }
-        .price-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border-color); padding: 15px 0; color: var(--text-muted); transition: 0.3s; }
-        .price-row:hover { color: var(--text-main); padding-left: 10px; border-color: var(--text-muted); }
-        .price-name { font-size: 0.95rem; font-weight: 400; color: var(--text-main); }
-        .price-desc { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
-        .price-val { font-family: var(--font-display); color: var(--gold-primary); font-weight: 700; }
-        [data-theme="light"] .price-val { color: #AA771C; }
+        .price-row { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 1px solid var(--border-color); padding: 12px 0; color: var(--text-muted); transition: 0.3s; }
+        .price-row:hover { color: var(--text-main); padding-left: 8px; border-color: var(--text-muted); }
+        .price-name { font-size: 0.9rem; }
+        .price-desc { display: block; font-size: 0.75rem; color: var(--text-muted); margin-top: 3px; font-style: italic; }
+        .price-val { font-family: var(--font-display); color: var(--gold-primary); font-weight: 700; font-size: 1rem; }
         .toolkit-box { margin-top: 30px; border: 1px solid var(--gold-primary); padding: 20px; text-align: center; background: rgba(212, 175, 55, 0.05); }
-        .toolkit-title { color: var(--gold-primary); margin-bottom: 5px; font-family: var(--font-display); }
-        [data-theme="light"] .toolkit-title { color: #AA771C; }
-        .toolkit-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+
+        /* --- FAQ SECTION --- */
+        .faq-section { padding: 80px 0; }
+        .faq-container { max-width: 800px; margin: 0 auto; }
+        .faq-item { border: 1px solid var(--border-color); background: var(--bg-panel); margin-bottom: 15px; border-radius: 4px; overflow: hidden; }
+        .faq-question { padding: 20px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: var(--bg-panel); transition: background 0.3s; }
+        .faq-question:hover { background: rgba(255,255,255,0.03); }
+        .faq-title-text { font-size: 1rem; color: var(--text-main); font-weight: 400; }
+        .faq-icon { font-size: 0.8rem; color: var(--text-muted); transition: transform 0.3s ease; }
+        .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; background: var(--bg-body); border-top: 1px solid transparent; padding: 0 20px; }
+        .faq-text-p { color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin: 0; }
+        .faq-item.active .faq-answer { max-height: 300px; padding: 20px; border-top: 1px solid var(--border-color); }
+        .faq-item.active .faq-icon { transform: rotate(180deg); color: var(--gold-primary); }
+        .faq-item.active .faq-title-text { color: var(--gold-primary); }
 
         /* --- HOW TO ORDER --- */
-        .howto { padding: 100px 0; }
-        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; margin-top: 50px; }
-        
-        /* Animasi Step Card juga */
-        .step-card { 
-            background: var(--bg-panel); padding: 30px; border: 1px solid var(--border-color); text-align: left; position: relative; transition: 0.3s; 
-            opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease, border-color 0.3s, transform 0.3s;
-        }
+        .howto { padding: 100px 0; background: var(--bg-panel); border-top: 1px solid var(--border-color); }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; margin-top: 50px; }
+        .step-card { background: var(--bg-body); padding: 25px; border: 1px solid var(--border-color); text-align: left; position: relative; opacity: 0; transform: translateY(20px); transition: 0.6s ease; }
         .step-card.reveal.active { opacity: 1; transform: translateY(0); }
-        .step-card:hover { border-color: var(--gold-primary); transform: translateY(-5px) !important; /* Force hover effect */ }
-        
-        .step-num { font-family: var(--font-display); font-size: 3rem; color: var(--border-color); position: absolute; top: 10px; right: 20px; font-weight: 800; opacity: 0.3; }
-        .step-icon { font-size: 1.5rem; color: var(--gold-primary); margin-bottom: 20px; display: inline-block; }
-        .step-title { font-size: 1rem; color: var(--text-main); margin-bottom: 10px; font-weight: 500; text-transform: uppercase; }
-        .step-text { font-size: 0.85rem; color: var(--text-muted); line-height: 1.6; }
+        .step-card:hover { border-color: var(--gold-primary); }
+        .step-num { font-size: 2.5rem; right: 20px; top: 10px; opacity: 0.15; }
+        .step-icon { font-size: 1.5rem; margin-bottom: 15px; }
+        .step-title { font-size: 0.9rem; margin-bottom: 10px; }
+        .step-text { font-size: 0.8rem; }
 
         /* --- FOOTER --- */
-        footer { border-top: 1px solid var(--border-color); padding: 60px 0 30px; background: var(--bg-panel); text-align: center; }
-        .socials { margin: 30px 0; }
-        .socials a { color: var(--text-main); margin: 0 15px; font-size: 1.2rem; text-decoration: none; transition: 0.3s; display: inline-block; }
+        footer { border-top: 1px solid var(--border-color); padding: 50px 0 30px; background: var(--bg-panel); text-align: center; }
+        .socials { margin: 25px 0; }
+        .socials a { color: var(--text-main); margin: 0 15px; font-size: 1.2rem; transition: 0.3s; display: inline-block; }
         .socials a:hover { color: var(--gold-primary); transform: translateY(-3px); }
 
         /* --- FLOATING WA --- */
-        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: #fff; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 999; box-shadow: 0 5px 15px rgba(0,0,0,0.5); transition: 0.3s; }
-        .wa-float:hover { transform: translateY(-5px); }
+        .wa-float { position: fixed; bottom: 30px; right: 30px; background: #25d366; color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; z-index: 999; box-shadow: 0 5px 15px rgba(0,0,0,0.4); transition: 0.3s; }
+        .wa-float:hover { transform: translateY(-4px); }
 
         /* --- MODAL --- */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 20000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
-        .modal.active { display: flex; animation: fadeUp 0.4s ease; }
-        .modal-box { background: var(--bg-panel); width: 90%; max-width: 900px; display: flex; border: 1px solid var(--border-color); }
-        .modal-gallery { width: 50%; background: #000; position: relative; overflow: hidden; }
-        .modal-gallery img { width: 100%; height: 100%; object-fit: cover; position: absolute; opacity: 0; transition: 0.5s; }
-        .modal-gallery img.active { opacity: 1; }
-        .modal-info { padding: 40px; width: 50%; display: flex; flex-direction: column; justify-content: center; }
-        .close-btn { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 1.5rem; cursor: pointer; z-index: 10; }
-        .modal-info h2 { color: var(--text-main); }
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 20000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .modal.active { display: flex; animation: fadeUp 0.3s ease; }
+        .modal-box { background: var(--bg-panel); width: 90%; max-width: 1000px; height: 80vh; display: flex; border: 1px solid var(--border-color); overflow: hidden; }
+        .modal-gallery { width: 55%; background: #000; position: relative; overflow: hidden; cursor: crosshair; }
+        .modal-gallery img { width: 100%; height: 100%; object-fit: contain; position: absolute; opacity: 0; transition: opacity 0.4s; transform-origin: center; pointer-events: none; }
+        .modal-gallery img.active { opacity: 1; pointer-events: auto; }
+        .modal-info { padding: 40px; width: 45%; display: flex; flex-direction: column; justify-content: center; background: var(--bg-panel); border-left: 1px solid var(--border-color); }
+        .close-btn { position: absolute; top: 20px; right: 20px; color: #fff; font-size: 1.8rem; cursor: pointer; z-index: 20; transition: 0.3s; }
+        .close-btn:hover { color: var(--gold-primary); }
+        .modal-info h2 { color: var(--text-main); font-size: 1.8rem; margin-bottom: 5px; }
         [data-theme="light"] .close-btn { color: #000; }
 
-        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 1024px) { .grid-products { grid-template-columns: repeat(3, 1fr); } }
         @media (max-width: 768px) {
-            .hero { background-attachment: scroll; }
-            .hero h1 { font-size: 2.5rem; }
-            .navbar { padding: 0 20px; }
-            .nav-links { position: fixed; top: 0; right: 0; width: 100%; height: 100vh; background: var(--bg-body); flex-direction: column; justify-content: center; align-items: center; gap: 30px; transform: translateX(100%); transition: 0.4s; border-left: 1px solid var(--border-color); }
+            .navbar { padding: 0 20px; top: var(--promo-height); }
+            .nav-links { position: fixed; top: 0; right: 0; width: 100%; height: 100vh; background: var(--bg-body); flex-direction: column; justify-content: center; align-items: center; gap: 30px; transform: translateX(100%); border-left: 1px solid var(--border-color); }
             .nav-links.active { transform: translateX(0); }
             .menu-btn { display: block; }
             .settings-group { margin-right: 15px; border-left: none; padding-left: 0; }
             .showcase { flex-direction: column; padding: 60px 20px; gap: 30px; text-align: center; }
             .showcase-img { width: 100%; height: 350px; }
-            .showcase-text h2 { font-size: 1.8rem; }
-            .grid-products { gap: 10px; }
-            .card:nth-child(even) { margin-top: 30px; }
-            .modal-box { flex-direction: column; height: 90vh; overflow-y: auto; }
-            .modal-gallery { width: 100%; height: 300px; min-height: 300px; }
-            .modal-info { width: 100%; padding: 25px; height: auto; }
-            .wa-float { width: 50px; height: 50px; font-size: 24px; bottom: 20px; right: 20px; }
-            .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+            .features-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .grid-products { grid-template-columns: repeat(2, 1fr); gap: 15px; }
+            .filter-container { gap: 10px; }
+            .filter-btn { padding: 6px 15px; font-size: 0.65rem; }
+            .modal-box { flex-direction: column; height: 90vh; width: 95%; max-width: none; overflow-y: auto; }
+            .modal-gallery { width: 100%; height: 45vh; min-height: 300px; }
+            .modal-info { width: 100%; padding: 25px; height: auto; border-left: none; border-top: 1px solid var(--border-color); }
+            .modal-info h2 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
+
+    <div class="promo-bar">
+        <div class="promo-text" data-i18n="promo_text">Kuku bukan sekadar detail, tapi bagian dari gaya hidup elegan | Nail art berkualitas membuat kuku tampil anggun dan tahan lama</div>
+    </div>
 
     <nav class="navbar">
         <div class="logo">REINKAR<span>NAILS</span></div>
@@ -239,7 +267,7 @@
                 <li><a href="#home" data-i18n="nav_home">Home</a></li>
                 <li><a href="#catalog" data-i18n="nav_col">Collection</a></li>
                 <li><a href="#pricelist" data-i18n="nav_price">Pricelist</a></li>
-                <li><a href="#howto" data-i18n="nav_howto">Cara Order</a></li>
+                <li><a href="#faq" data-i18n="nav_faq">FAQ</a></li>
             </ul>
             <div class="settings-group">
                 <button class="setting-btn" id="themeToggle" onclick="toggleTheme()"><i class="fa-solid fa-moon" id="themeIcon"></i></button>
@@ -259,10 +287,37 @@
     </section>
 
     <section class="showcase">
-        <img src="https://images.unsplash.com/photo-1604654894610-df63bc536371?q=80&w=1974&auto=format&fit=crop" class="showcase-img" alt="Luxury Nails">
+        <img src="https://lh3.googleusercontent.com/rd-d/ALs6j_ElUfLy2yXcghljwLtDMMHikJuTZBgWDLxNX-kwbvXjKKnGSoabcybDlQw-SCZDdqA93JLS8jyShJFvDhoWQr_UcQJMJfXUwIZH-KF6Jz0cVBVK70vsfALP2v1Fb91wmQKI3TOmq6KNN3_04ToSH4oomqxKsI2a2jZMoAFVUtIiEc3I0dSMlmM3ZmHmmW4AUltGZ04FAR7z7moMN_3-vcIhuBzJJTplZKNrET2MGvA7T4aI-CJ6I4zJqRb3_SvM8dDdO0QnCAHCDMfCmM91UqJK1SiJxvxjp3066Q4Rr_tJVkakQ34HikPbgS0TBTeFdLsV5ayaNNM_xfXgkXEu5_dwg73WiHauUuj7dEppY58JUnb02LdK5qb3E1xbd8DTZsGSiEC8N8-E6LVba-dbGhgJlffeFtqiKXoqIiznZlW9_9o5g4ClzM82zRvdiLiVLqmWbmN1A432dLLEnSREMexnV0TQY-K8-lA9PqFq2Ft1Omd3Kvmu0ZCoXntuHn3iL6_3lO7AThCkupT9K9t2jpSw0pGt7WQbG4RmU0AOkn80qGBCr2602M7IjXe4KUFJFH2LzGSGrVPd4RawFIsFckzjfBBaDjA48phtDnZptMjH-BTqkW0B81FOy6MtlMtRFtowgGhBzRzAnYd6KhhVLzMRmKBI42ssgVnJp_qvYDZYEmuyOIVh0BCyKDnteyZ6u9CSRX2aDLtWQaLX4NAxQTjU0McGXBWQ3f7PBKsIjSLRCTOeeborOi9bCIOJWLGMHELzTDEsCepMDSafG0wxFJ2B2Wmmq9-iKbC_SKpSVn5cAWLunzfa9drolTiCpUuMuCa3Z-Qfxlg9lOzyLGQTq69r7x0WTx4zEKqgA2l-9mcgjRnICR3WD2u8qFI7NHmX9JW1KlS-2V9thLlRry1RdGLv4PMIzluKoYyrpZcPNC9dhPrO4KIP-pqX0aP8jeD66ifMNNiiQ8YvL84DxCWW80L9TS0b1jpbUtR_L7PfQMij5aZ_wJ8BJ-O7EJJoKoT9_L34YPr5NBtzlLAPUq5HbGJCCXx4VVB7dhiI6edEYYsEwZcMyPhoGLO1gwQ=w1920-h918?auditContext=prefetch?q=80&w=1974&auto=format&fit=crop" class="showcase-img" alt="Luxury Nails">
         <div class="showcase-text">
             <h2 data-i18n="showcase_title">Handcrafted<br><span class="text-gold">Perfection</span></h2>
             <p data-i18n="showcase_desc">Setiap set kuku dibuat manual dengan detail presisi. Kami menggabungkan seni lukis tangan dan material premium untuk menciptakan aksesori yang tak lekang oleh waktu.</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-item reveal">
+                    <i class="fa-solid fa-paintbrush feature-icon"></i>
+                    <h4 class="feature-title" data-i18n="feat_1_t">100% Handmade</h4>
+                    <p class="feature-desc" data-i18n="feat_1_d">Lukis tangan manual, bukan cetakan pabrik.</p>
+                </div>
+                <div class="feature-item reveal">
+                    <i class="fa-solid fa-repeat feature-icon"></i>
+                    <h4 class="feature-title" data-i18n="feat_2_t">Reusable</h4>
+                    <p class="feature-desc" data-i18n="feat_2_d">Bisa dipakai berkali-kali & tahan lama.</p>
+                </div>
+                <div class="feature-item reveal">
+                    <i class="fa-regular fa-gem feature-icon"></i>
+                    <h4 class="feature-title" data-i18n="feat_3_t">Premium Gel</h4>
+                    <p class="feature-desc" data-i18n="feat_3_d">Menggunakan gel polish berkualitas salon.</p>
+                </div>
+                <div class="feature-item reveal">
+                    <i class="fa-solid fa-stopwatch feature-icon"></i>
+                    <h4 class="feature-title" data-i18n="feat_4_t">Instant Glam</h4>
+                    <p class="feature-desc" data-i18n="feat_4_d">Pasang mudah kurang dari 10 menit.</p>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -272,6 +327,15 @@
             <h2>Signature <span class="text-gold">Series</span></h2>
         </div>
         <div class="container">
+            <div class="filter-container">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="Solid Series">Solid</button>
+                <button class="filter-btn" data-filter="Cat Eye Series">Cat Eye</button>
+                <button class="filter-btn" data-filter="3D Art Series">3D Art</button>
+                <button class="filter-btn" data-filter="2D Art Series">2D Art</button>
+                <button class="filter-btn" data-filter="Chrome Series">Chrome</button>
+            </div>
+            
             <div class="grid-products" id="gridProducts"></div>
         </div>
     </section>
@@ -288,8 +352,55 @@
                 <div class="price-row"><div><span class="price-name" data-i18n="item_3_name">Fake Nails Cat Eye</span><span class="price-desc" data-i18n="item_3_desc">Efek magnetik berkilau</span></div><span class="price-val">50k</span></div>
                 <div class="price-row"><div><span class="price-name" data-i18n="item_4_name">Cat Eye + Art</span><span class="price-desc" data-i18n="item_4_desc">Kombinasi efek magnet & nail art</span></div><span class="price-val">55k</span></div>
                 <div class="price-row"><div><span class="price-name" data-i18n="item_5_name">Fake Nails 3D</span><span class="price-desc" data-i18n="item_5_desc">Tergantung banyaknya aksesoris 3D</span></div><span class="price-val">50k - 70k</span></div>
-                <div style="margin: 20px 0; font-size: 0.9rem; color: var(--text-main); font-style: italic; border-left: 2px solid var(--gold-primary); padding-left: 15px;">* <span data-i18n="price_note">Free 12pcs Lem Sticker setiap pembelian.</span></div>
-                <div class="toolkit-box"><h4 class="toolkit-title">Toolkit 5in1 (+5k)</h4><p class="toolkit-desc" data-i18n="toolkit_desc">Lem Cair, Lem Sticker 24pcs, Kikir, Alcohol Swab, Stick</p><a href="https://wa.me/6281234567890?text=Saya%20mau%20tambah%20Toolkit%205in1" class="btn" style="padding: 8px 20px; font-size: 0.7rem;" data-i18n="btn_add">Tambah ke Order</a></div>
+                <div style="margin: 20px 0; font-size: 0.8rem; color: var(--text-main); font-style: italic; border-left: 2px solid var(--gold-primary); padding-left: 15px;">* <span data-i18n="price_note">Free 12pcs Lem Sticker setiap pembelian.</span></div>
+                <div class="toolkit-box"><h4 class="toolkit-title">Toolkit 5in1 (+5k)</h4><p class="toolkit-desc" data-i18n="toolkit_desc">Lem Cair, Lem Sticker 24pcs, Kikir, Alcohol Swab, Stick</p><a href="https://wa.me/6281234567890?text=Saya%20mau%20tambah%20Toolkit%205in1" class="btn" style="padding: 10px 25px;" data-i18n="btn_add">Tambah ke Order</a></div>
+            </div>
+        </div>
+    </section>
+
+    <section id="faq" class="faq-section">
+        <div class="container">
+            <div class="section-header" style="margin-top: 0;">
+                <h2 data-i18n="faq_title">F.A.Q</h2>
+                <p data-i18n="faq_sub">Pertanyaan yang sering diajukan</p>
+            </div>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span class="faq-title-text" data-i18n="q1">Apakah kuku bisa dipakai ulang?</span> 
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="faq-text-p" data-i18n="a1">Ya, Press-on Nails dari Reinkarnails bisa dipakai berkali-kali (reusable) selama Anda merawatnya dengan baik dan menggunakan Lem Sticker (Jelly Glue).</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span class="faq-title-text" data-i18n="q2">Bagaimana cara mengukur kuku?</span> 
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="faq-text-p" data-i18n="a2">Sangat mudah! Cukup kirimkan foto jari tangan Anda di atas kertas putih, lalu letakkan uang koin di sebelahnya sebagai pembanding ukuran. Admin kami akan menghitung ukurannya untuk Anda.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span class="faq-title-text" data-i18n="q3">Berapa lama proses pengerjaan?</span> 
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="faq-text-p" data-i18n="a3">Karena ini adalah produk handmade yang detail, kami menerapkan sistem Pre-Order (PO) sekitar 7 hari kerja untuk memastikan kualitas terbaik.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span class="faq-title-text" data-i18n="q4">Lem apa yang saya dapatkan?</span> 
+                        <i class="fa-solid fa-chevron-down faq-icon"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p class="faq-text-p" data-i18n="a4">Setiap pembelian sudah termasuk Free Lem Sticker 12pcs. Untuk ketahanan ekstra (1-2 minggu), kami sarankan membeli Toolkit 5in1 yang berisi Lem Cair khusus.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -313,13 +424,13 @@
 
     <footer>
         <div class="container">
-            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 15px;">REINKARNAILS</h3>
+            <h3 style="color: var(--text-main); font-size: 1.2rem; margin-bottom: 20px;">REINKARNAILS</h3>
             <div class="socials">
                 <a href="https://instagram.com" target="_blank"><i class="fa-brands fa-instagram"></i></a>
                 <a href="https://shopee.co.id/reinkarnails" target="_blank"><i class="fa-solid fa-bag-shopping"></i></a>
                 <a href="https://tiktok.com" target="_blank"><i class="fa-brands fa-tiktok"></i></a>
             </div>
-            <p style="font-size: 0.7rem; color: var(--text-muted);">&copy; 2026. Made in Indonesia.</p>
+            <p style="font-size: 0.7rem; color: var(--text-muted);">© 2026. Made in Indonesia.</p>
         </div>
     </footer>
 
@@ -327,150 +438,173 @@
 
     <div class="modal" id="productModal">
         <div class="modal-box">
-            <span class="close-btn">&times;</span>
+            <span class="close-btn">×</span>
             <div class="modal-gallery" id="modalGallery"></div>
             <div class="modal-info">
-                <h2 id="mTitle" style="font-size: 1.8rem; margin-bottom: 5px; line-height: 1.2;"></h2>
-                <p id="mPrice" style="color: var(--gold-primary); font-size: 1.2rem; margin-bottom: 20px;"></p>
-                <p id="mDesc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px;"></p>
+                <h2 id="mTitle" style="margin-bottom: 5px; line-height: 1.2;"></h2>
+                <p id="mCategory" style="color: var(--gold-primary); font-size: 0.9rem; margin-bottom: 20px; font-weight: bold; letter-spacing: 2px; text-transform: uppercase;"></p>
+                <p id="mDesc" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 30px; line-height: 1.6;"></p>
                 <a href="#" id="waLink" class="btn" style="width: 100%; text-align: center;" data-i18n="btn_order_wa">Order on WhatsApp</a>
             </div>
         </div>
     </div>
 
     <script>
-        // --- 0. PAGE LOAD ANIMATION ---
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('loaded');
-        });
+        document.addEventListener('DOMContentLoaded', () => { document.body.classList.add('loaded'); });
 
-        // --- 1. LANGUAGE DATA ---
         const translations = {
             id: {
-                nav_home: "Beranda", nav_col: "Koleksi", nav_price: "Harga", nav_howto: "Cara Pesan",
-                hero_title: `Tampil Mewah<br><span class="text-gold">Seketika</span>`,
-                hero_btn: "Lihat Katalog",
-                showcase_title: `Handcrafted<br><span class="text-gold">Perfection</span>`,
-                showcase_desc: "Setiap set kuku dibuat manual dengan detail presisi. Kami menggabungkan seni lukis tangan dan material premium untuk menciptakan aksesori yang tak lekang oleh waktu.",
-                cat_subtitle: "TERBARU",
-                price_title: "Daftar Harga",
-                price_sub: "Harga belum termasuk ongkir",
+                promo_text: "Kuku bukan sekadar detail, tapi bagian dari gaya hidup elegan | Nail art berkualitas membuat kuku tampil anggun dan tahan lama",
+                nav_home: "Beranda", nav_col: "Koleksi", nav_price: "Harga", nav_faq: "FAQ", nav_howto: "Cara Pesan",
+                hero_title: `Tampil Mewah<br><span class="text-gold">Seketika</span>`, hero_btn: "Lihat Katalog",
+                showcase_title: `Handcrafted<br><span class="text-gold">Perfection</span>`, showcase_desc: "Setiap set kuku dibuat manual dengan detail presisi...",
+                feat_1_t: "100% Handmade", feat_1_d: "Lukis tangan manual, bukan cetakan pabrik.",
+                feat_2_t: "Reusable", feat_2_d: "Bisa dipakai berkali-kali & tahan lama.",
+                feat_3_t: "Premium Gel", feat_3_d: "Menggunakan gel polish berkualitas salon.",
+                feat_4_t: "Instant Glam", feat_4_d: "Pasang mudah kurang dari 10 menit.",
+                cat_subtitle: "TERBARU", price_title: "Daftar Harga", price_sub: "Harga belum termasuk ongkir",
                 item_1_name: "Fake Nails Polos", item_1_desc: "Satu warna (Glossy/Matte)",
                 item_2_name: "Fake Nails 2D", item_2_desc: "Marble, Glitter, French, Sticker, Art, Foil",
                 item_3_name: "Fake Nails Cat Eye", item_3_desc: "Efek magnetik berkilau",
                 item_4_name: "Cat Eye + Art", item_4_desc: "Kombinasi efek magnet & nail art",
                 item_5_name: "Fake Nails 3D", item_5_desc: "Tergantung banyaknya aksesoris 3D",
-                price_note: "Free 12pcs Lem Sticker setiap pembelian.",
-                toolkit_desc: "Lem Cair, Lem Sticker 24pcs, Kikir, Alcohol Swab, Stick",
-                btn_add: "Tambah ke Order",
-                howto_title: `Cara <span class="text-gold">Order</span>`,
-                howto_sub: "Ikuti langkah mudah berikut",
-                step1_title: "Konsultasi", step1_desc: "Chat melalui DM Instagram atau WhatsApp. Sertakan gambar referensi model art atau deskripsikan desain impianmu.",
-                step2_title: "Ukur dengan Koin", step2_desc: "Kirim <strong>foto jari tangan dengan meletakkan uang koin</strong> di sebelahnya. Ini agar ukuran kuku pas & akurat.",
-                step3_title: "Checkout", step3_desc: "Jika pesanan sudah disetujui (ACC), admin akan mengirimkan <strong>Link Shopee</strong> untuk memudahkan transaksi.",
-                step4_title: "Konfirmasi", step4_desc: "Setelah Checkout (CO), segera konfirmasi Nama, Alamat, dan Nomor Pesanan ke admin.",
-                step5_title: "Produksi (PO)", step5_desc: "Sistem Pre-Order 7 hari. Pengiriman dilakukan 2-3 hari setelah pengerjaan selesai.",
-                btn_consult: "Mulai Konsultasi",
-                btn_order_wa: "Pesan via WhatsApp"
+                price_note: "Free 12pcs Lem Sticker setiap pembelian.", toolkit_desc: "Lem Cair, Lem Sticker 24pcs, Kikir, Alcohol Swab, Stick", btn_add: "Tambah ke Order",
+                howto_title: `Cara <span class="text-gold">Order</span>`, howto_sub: "Ikuti langkah mudah berikut",
+                step1_title: "Konsultasi", step1_desc: "Chat melalui DM Instagram atau WhatsApp...",
+                step2_title: "Ukur dengan Koin", step2_desc: "Kirim <strong>foto jari tangan dengan meletakkan uang koin</strong>...",
+                step3_title: "Checkout", step3_desc: "Jika pesanan sudah disetujui (ACC)...",
+                step4_title: "Konfirmasi", step4_desc: "Setelah Checkout (CO)...",
+                step5_title: "Produksi (PO)", step5_desc: "Sistem Pre-Order 7 hari...",
+                btn_consult: "Mulai Konsultasi", btn_order_wa: "Pesan via WhatsApp",
+                faq_title: "F.A.Q", faq_sub: "Pertanyaan umum",
+                q1: "Apakah kuku bisa dipakai ulang?", a1: "Ya, Press-on Nails dari Reinkarnails bisa dipakai berkali-kali...",
+                q2: "Bagaimana cara mengukur kuku?", a2: "Sangat mudah! Cukup kirimkan foto jari tangan...",
+                q3: "Berapa lama proses pengerjaan?", a3: "Karena ini handmade, kami menerapkan Pre-Order 7 hari...",
+                q4: "Lem apa yang saya dapatkan?", a4: "Setiap pembelian termasuk Free Lem Sticker 12pcs..."
             },
             en: {
-                nav_home: "Home", nav_col: "Collection", nav_price: "Price List", nav_howto: "How to Order",
-                hero_title: `Instant Luxury<br><span class="text-gold">Makeover</span>`,
-                hero_btn: "View Catalog",
-                showcase_title: `Handcrafted<br><span class="text-gold">Perfection</span>`,
-                showcase_desc: "Each set is handmade with precise detail. We combine hand-painting techniques with premium materials to create timeless accessories.",
-                cat_subtitle: "LATEST DROP",
-                price_title: "Price List",
-                price_sub: "Shipping not included",
+                promo_text: "Nails are not just a detail, they are part of an elegant lifestyle | Quality nail art makes nails look graceful and long-lasting",
+                nav_home: "Home", nav_col: "Collection", nav_price: "Price List", nav_faq: "FAQ", nav_howto: "How to Order",
+                hero_title: `Instant Luxury<br><span class="text-gold">Makeover</span>`, hero_btn: "View Catalog",
+                showcase_title: `Handcrafted<br><span class="text-gold">Perfection</span>`, showcase_desc: "Each set is handmade with precise detail...",
+                feat_1_t: "100% Handmade", feat_1_d: "Manually hand-painted, not factory printed.",
+                feat_2_t: "Reusable", feat_2_d: "Can be worn multiple times & durable.",
+                feat_3_t: "Premium Gel", feat_3_d: "Using high-quality salon gel polish.",
+                feat_4_t: "Instant Glam", feat_4_d: "Easy application in under 10 minutes.",
+                cat_subtitle: "LATEST DROP", price_title: "Price List", price_sub: "Shipping not included",
                 item_1_name: "Solid Color", item_1_desc: "Single color (Glossy/Matte)",
                 item_2_name: "2D Art Series", item_2_desc: "Marble, Glitter, French, Sticker, Art, Foil",
                 item_3_name: "Cat Eye Series", item_3_desc: "Shimmering magnetic effect",
                 item_4_name: "Cat Eye + Art", item_4_desc: "Magnetic effect combined with art",
                 item_5_name: "3D Art Series", item_5_desc: "Depends on amount of 3D accessories",
-                price_note: "Free 12pcs Sticker Glue included.",
-                toolkit_desc: "Liquid Glue, 24pcs Sticker Glue, File, Alcohol Swab, Stick",
-                btn_add: "Add to Order",
-                howto_title: `How to <span class="text-gold">Order</span>`,
-                howto_sub: "Follow these simple steps",
-                step1_title: "Consultation", step1_desc: "Chat via Instagram DM or WhatsApp. Send a reference image of the art model or describe your dream design.",
-                step2_title: "Measure with Coin", step2_desc: "Send a <strong>photo of your fingers next to a coin</strong>. This ensures accurate sizing.",
-                step3_title: "Checkout", step3_desc: "If order is approved (ACC), admin will send a <strong>Shopee Link</strong> for easy transaction.",
-                step4_title: "Confirm", step4_desc: "After Checkout (CO), immediately confirm Name, Address, and Order Number to admin.",
-                step5_title: "Production (PO)", step5_desc: "Pre-Order system 7 days. Shipping done 2-3 days after production finishes.",
-                btn_consult: "Start Consultation",
-                btn_order_wa: "Order on WhatsApp"
+                price_note: "Free 12pcs Sticker Glue included.", toolkit_desc: "Liquid Glue, 24pcs Sticker Glue, File, Alcohol Swab, Stick", btn_add: "Add to Order",
+                howto_title: `How to <span class="text-gold">Order</span>`, howto_sub: "Follow these simple steps",
+                step1_title: "Consultation", step1_desc: "Chat via Instagram DM or WhatsApp...",
+                step2_title: "Measure with Coin", step2_desc: "Send a <strong>photo of your fingers next to a coin</strong>...",
+                step3_title: "Checkout", step3_desc: "If order is approved (ACC)...",
+                step4_title: "Confirm", step4_desc: "After Checkout (CO)...",
+                step5_title: "Production (PO)", step5_desc: "Pre-Order system 7 days...",
+                btn_consult: "Start Consultation", btn_order_wa: "Order on WhatsApp",
+                faq_title: "F.A.Q", faq_sub: "Frequently Asked Questions",
+                q1: "Are the nails reusable?", a1: "Yes, our Press-on Nails are reusable with proper care...",
+                q2: "How do I measure my nails?", a2: "It's easy! Just send a photo of your fingers next to a coin...",
+                q3: "How long is the processing time?", a3: "As this is handmade, we have a 7-day Pre-Order system...",
+                q4: "What glue do I get?", a4: "Each purchase includes Free 12pcs Sticker Glue..."
             }
         };
 
         let currentLang = localStorage.getItem('lang') || 'id';
         let currentTheme = localStorage.getItem('theme') || 'dark';
 
-        // --- 2. THEME & LANG LOGIC ---
         function applyTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             const icon = document.getElementById('themeIcon');
-            if(theme === 'light') {
-                icon.classList.remove('fa-moon');
-                icon.classList.add('fa-sun');
-            } else {
-                icon.classList.remove('fa-sun');
-                icon.classList.add('fa-moon');
-            }
+            if(theme === 'light') { icon.classList.remove('fa-moon'); icon.classList.add('fa-sun'); } 
+            else { icon.classList.remove('fa-sun'); icon.classList.add('fa-moon'); }
             localStorage.setItem('theme', theme);
         }
 
-        function toggleTheme() {
-            currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            applyTheme(currentTheme);
-        }
+        function toggleTheme() { currentTheme = currentTheme === 'dark' ? 'light' : 'dark'; applyTheme(currentTheme); }
 
         function applyLanguage(lang) {
-            const elements = document.querySelectorAll('[data-i18n]');
-            elements.forEach(el => {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
-                if(translations[lang][key]) {
-                    el.innerHTML = translations[lang][key];
-                }
+                if(translations[lang][key]) el.innerHTML = translations[lang][key];
             });
             document.getElementById('langText').innerText = lang === 'id' ? 'EN' : 'ID';
             localStorage.setItem('lang', lang);
         }
 
-        function toggleLanguage() {
-            currentLang = currentLang === 'id' ? 'en' : 'id';
-            applyLanguage(currentLang);
-            document.documentElement.lang = currentLang;
-        }
+        function toggleLanguage() { currentLang = currentLang === 'id' ? 'en' : 'id'; applyLanguage(currentLang); document.documentElement.lang = currentLang; }
 
         applyTheme(currentTheme);
         applyLanguage(currentLang);
 
-        // --- 3. SCROLL REVEAL ANIMATION (Tanpa Blur) ---
         window.addEventListener('scroll', () => {
-            const reveals = document.querySelectorAll('.reveal');
-            reveals.forEach(r => {
+            document.querySelectorAll('.reveal').forEach(r => {
                 if(r.getBoundingClientRect().top < window.innerHeight - 100) r.classList.add('active');
             });
         });
 
-        // --- 4. DATA & MODAL ---
         const products = [
-            { id: 1, name: "Black Phoenix", price: 55000, desc: "Cat Eye + Art Series: Nuansa hitam pekat dengan sentuhan gold foil asli.", img: ["https://images.pexels.com/photos/5569944/pexels-photo-5569944.jpeg?w=600","https://images.pexels.com/photos/3997344/pexels-photo-3997344.jpeg?w=600"] },
-            { id: 2, name: "Golden Hour", price: 50000, desc: "Cat Eye Series: Efek magnetik yang berkilau hidup saat terkena pantulan cahaya.", img: ["https://images.unsplash.com/photo-1522337660859-02fbefca4702?w=600","https://images.pexels.com/photos/4661289/pexels-photo-4661289.jpeg?w=600"] },
-            { id: 3, name: "Noir 3D", price: 65000, desc: "3D Art Series: Desain timbul dengan aksen emas minimalis.", img: ["https://images.pexels.com/photos/5871817/pexels-photo-5871817.jpeg?w=600","https://images.pexels.com/photos/3354511/pexels-photo-3354511.jpeg?w=600"] },
-            { id: 4, name: "Ruby Dust", price: 45000, desc: "2D Series: Merah marun mewah dengan taburan glitter halus.", img: ["https://images.pexels.com/photos/756670/pexels-photo-756670.jpeg?w=600","https://images.pexels.com/photos/7020085/pexels-photo-7020085.jpeg?w=600"] }
+            { id: 1, name: "Simple Cat Eye", category: "Cat Eye Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_ElUfLy2yXcghljwLtDMMHikJuTZBgWDLxNX-kwbvXjKKnGSoabcybDlQw-SCZDdqA93JLS8jyShJFvDhoWQr_UcQJMJfXUwIZH-KF6Jz0cVBVK70vsfALP2v1Fb91wmQKI3TOmq6KNN3_04ToSH4oomqxKsI2a2jZMoAFVUtIiEc3I0dSMlmM3ZmHmmW4AUltGZ04FAR7z7moMN_3-vcIhuBzJJTplZKNrET2MGvA7T4aI-CJ6I4zJqRb3_SvM8dDdO0QnCAHCDMfCmM91UqJK1SiJxvxjp3066Q4Rr_tJVkakQ34HikPbgS0TBTeFdLsV5ayaNNM_xfXgkXEu5_dwg73WiHauUuj7dEppY58JUnb02LdK5qb3E1xbd8DTZsGSiEC8N8-E6LVba-dbGhgJlffeFtqiKXoqIiznZlW9_9o5g4ClzM82zRvdiLiVLqmWbmN1A432dLLEnSREMexnV0TQY-K8-lA9PqFq2Ft1Omd3Kvmu0ZCoXntuHn3iL6_3lO7AThCkupT9K9t2jpSw0pGt7WQbG4RmU0AOkn80qGBCr2602M7IjXe4KUFJFH2LzGSGrVPd4RawFIsFckzjfBBaDjA48phtDnZptMjH-BTqkW0B81FOy6MtlMtRFtowgGhBzRzAnYd6KhhVLzMRmKBI42ssgVnJp_qvYDZYEmuyOIVh0BCyKDnteyZ6u9CSRX2aDLtWQaLX4NAxQTjU0McGXBWQ3f7PBKsIjSLRCTOeeborOi9bCIOJWLGMHELzTDEsCepMDSafG0wxFJ2B2Wmmq9-iKbC_SKpSVn5cAWLunzfa9drolTiCpUuMuCa3Z-Qfxlg9lOzyLGQTq69r7x0WTx4zEKqgA2l-9mcgjRnICR3WD2u8qFI7NHmX9JW1KlS-2V9thLlRry1RdGLv4PMIzluKoYyrpZcPNC9dhPrO4KIP-pqX0aP8jeD66ifMNNiiQ8YvL84DxCWW80L9TS0b1jpbUtR_L7PfQMij5aZ_wJ8BJ-O7EJJoKoT9_L34YPr5NBtzlLAPUq5HbGJCCXx4VVB7dhiI6edEYYsEwZcMyPhoGLO1gwQ=w1920-h918?auditContext=prefetch"], desc: "Desain Cat Eye minimalis dengan kilau magnetik yang elegan namun tetap subtle." },
+            { id: 2, name: "Polos (Two Tone)", category: "Solid Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_F9f2j4qFsG8k4JZOpX3dJm7pO1Jh3XhfjUe8prr5blL8v15C9EiLGXwApy0O7XMwqoZqlWyEUYxgbzrIgPrDEDvxFaVCVxQpq-7lFoRrb6eEbyCa3-aG-Oyjds5thj9tkai8W3RRhfvC9_1LTHd07qEvK8kKiLmfTQYIR6Te5u81lEpwCviHbOjq20yl823cby8emyUO6gPSxFtL9lQLCzkvM0qw7_Fev6DuE83c-32dTUeQnWI8gwptlISl8WcvIhL0ro5S2hmcdwTXilPJfVn0UPPp0qpOj6TNV-y7TcC4_cW_7pgrunavJB-4hlLFi8-FjVr0pzaZZV5PRyf5hoFuRGrhCfAgddFAKztLcPs0HDe-62pT67CA_NdSYdODDAqZ_fpw3G152s4A916tpovws_N2B8uBiH4TUPvGYI1chnw1BcFTd16fMsD5uxDWYdhYMRPtSLdaEafhjf0B7gVhhoz_JtjrDPVu27g6NrMyoxXEWAxyR8mZ-FieaDdGkiML8qbaExi4bkDqIbmMFFSHO-1XPpf0oKlE8vNgjw5iNssEgV4J4-F-nL4hwV8CkQkA9ZkE95uwnmbo1KckNTqWA9pG2Wtw9gjaMln_EpwsRXB9SjUCUMqhMvAboLTgReCn3sdy90-512Q_21vX2ZTpTpBm3pLd4IFvrTjN09lFGrdNqzAf34Es74-F8RDmqTlEnlaLMhZuO03w8DJzxwqOOBTjZbECfBIQNLTMHhTESD69WNIq-CYJho2GJ53AjiJnwKrz6Xln4KwM9dfAH4YXBQ6epv__kCTggXYdvyMwLBP12Co8eY0CxLxNGyOPWk4ZShvzDMq3cSIKZZeyA4X_1VFOb6xvRQS2aIqSMssWT0xPt8unrQtqXLYBjr2WMCbAQSpSnjkkBCM9MaiFcL7UmEYz4Tpcmm4QGfzdLbd_NjCohfaUzDt9OtU5vBwwHlnGQZpKirhviwANKeLDyBtR2yFEt7CXYrZN7pZvpPdTUeQlev5cWxemfqpDIbwPoRlAzEElbvXEM3elKHJuaARhXYF8EjRLN9elwSTCSNWCpSGUivZKu4_aw=w1227-h918?auditContext=prefetch"], desc: "Kombinasi dua warna solid yang clean dan modern, cocok untuk daily wear." },
+            { id: 3, name: "Polos (Solid Color)", category: "Solid Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_GoK0rWyUrvhJCU3-m1Yrqa8nlV76fC7o8_J84uZB2wcURX8zgyr-YA1BaVSO4JwoUbk3L0iZNjWdlWqiDQbDRYDa9FcqhlWGXMMDMxkyLlz55j-WaL7W2KQYpvoVctfzPcWkTF999fpRWBe8oqlJbRpII3rXaBnk64Kb8nAkrxFR-w59JIP-CE6yrWfK2qT0nDijCYmMWnuIZFjmO9lSzLsMFrEaJNziuIXMpduC4BrWnkqSYmdVnBOFRqReMqqXmRGpR1CNqpYwcOyBAMMEmDiwBSKsV2dI3jDYnUQEmtfo_CQCz41N5zaLLjBblye6q5eGlrfZRKquumKosMW3DVFRwpJ7ALJCB7gl5SLd4hfVdwCJL4EqG8nsAO1bUOEKiOsIKoE9zfXWSWQ2usbBSFbhYXVsjRIo-rnkSZtHbucmvbFI-pF8xZph6DPgCYs5r27BU9Rbh9oNg4BcfupeWjh2Jq9HgAxT95M1QzCbW1qig7-vBuNyN8EAEo53jtvZOa9hQcpLq3UfK8tK9vDqBYizU4XkOzQfEsrFrHZL6osgmNditG04W3ENKDx1jz8nDKsdV9tIvzg5uVhcz-jZt4830LX-x6Amn_9ZTTIlsxjPhFl0XdXZkAMzR86iIIlW6_erNw0McyN79GF1ECm-I2flkAUw11UQNZVczdQdN7Bt0HzuemCKSqfIDFVxXZcycTMqO3bSskvZETeu12vb9NV1ASySmfW5wQjO2TSHNCQqdAMuvJq_Tcj8hxjZZy3oSGOUG9lianRU4_CY-4h8KlnMUL28viBlbd4_Vvl8J62G_GwUhfaQZIT4J8MwSPMQbgzd7_-XBO_qlO3lNilTpL4a_XsFabot89XMKDr4xBpGIx6ZRgwrnVoP5ok1bITSR-2j9FA9W0BEHCLEjo7mLFlNbV6g4Rttxw-1-Khd-DnJ6Zpqc8HcEJ_inl0JBtvFLxOCRbw2o0WljtlVsECI9DWcYYjJy6qNK10Ukd9OLaEhTEAZUGamT9jkjhFl6CQn_eaY3ClBeUorF8vcUu5PNrcSeiN3c5jRcxBZSPeI2kZPs5eTXEM6abkw=w1227-h918?auditContext=prefetch"], desc: "Satu warna penuh (full block) yang memberikan kesan rapi dan klasik." },
+            { id: 4, name: "Polos (Rainbow Pallete)", category: "Solid Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_E4t1ipRFcwFGk_DiZRZPqCL-PRovotzz_cIxRNZ5lT-DC9SFMgnl9JkHlXBXuXuYWhXXVTQDN-HvgNug6VaEIBRXqe0L_rEFC29rnPboTGrvCStFjIRxWniMtoXXitJHfVSVqH0HJ54ug52YBIz7a9gp7Yjv9KvmPWTaxJAcAfWOeoqlSISDfdMVOIuXkyhaJC_TXkX0gdXr0gkUuAMy7_Q8UQqKg0uDGu9fHSsAMS8Gm-gCVN-AD6dNZVO7Ztixh_INbxDChY033zIwD_90JclGa__uopmM8RPfS8cLHW9BgNK1wDBj1OpgdHziMzE5CErjNq1A_Hs4ctV5-eiHodQTFFEqnjJHQ7LU5zBw6ixeNHCxbaxceKeIHrajk_H5sifuTSRsTYNRmw6ee0XSHAiMod8G6f8wLcLYUhPJsYoBgmoBYNd_xw5iN0fsxvoGfna-wX9uBJb1eUf3xdQqtk7eKkmK6K5RiUlRvLd0VOM2yWcz-59bZttPhV6MpTEhvj85LMSoOpzGwlCi4Aia_A_zXRS85QnOH6U1OoVyBQtJmF_EE_oBtGnckPh8dz5_-LXKn6E-d8ZAWbE0TxgP65NklK7EywVtKnEol_G3jfd2HLg-xIFGk7IOYKVt725ZHPDSmdsJB9t-xna0UqoJ8bxpMMAOkKlBWXzvisUlawbWm1oWsla8WgbN4BlMXFw8yoa1buO_Y0Z8q3hi5oeyUXWX6to6demH54f73KqMsIsvBPI1q-eXgmIv_ZKdF_FAxmQg-9BK09_2UVmf3Ebforv-YFfiNeifrxNBWSIkWlGNy-lM6dfd-aLyhPWG2ChSYhwkzkC7uZxtGzyvn-WS_6L28SFWHxEUcl5ZE_UGrP9Pb1eEwEZ6vL6pboirXr4L_648763jkFw9jpzCJdFVNRVuXb5I2K2ExfvqESe2wJEjsSBA9j4ZyENSH8zQ0e_3_3QxYDjT60U7VGIcw-QKP_x7B1qKn_JG4jZYTr5Gs5opXmmWcWCBYeivplk0OwPVc7S5PSdgA4_CdGsest7z65_6VbfuoHNwtP4nDtszuXH4S5EgaAHiGwlhk=w1227-h918?auditContext=prefetch"], desc: "Paduan warna-warni ceria dalam satu set, memberikan nuansa playful." },
+            { id: 5, name: "Medium Cat Eye", category: "Cat Eye Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_FXA4KQC2-BDJZ2BVQ3paT8qOJKOCw2WRAFbzkgG6RST4NnjAT08ANYfHC28u-JMrHlmwIxnNfwnweRREqOUTpxKPVW4QZjUCHWy74zNwjaVXC-wLYCs31kmKveFCxHm22BFWNGod4UhEiXXPFm1tp-scJ4ExSc85x1f2rrtEBIL6kdgaKspRNVe-0ZKR0w7SwB0G7ngffVGej9IBIDicBrcFi490jVsgMt8WDp4AZ8eobCtgwvmb0BythbNfkoIGPAOs3GMijf-JnkjYHRXzTOynUIwf6fQUhzL3aYb9-69x-Pzm7PV38s1K3C-7yt9ycKlNCJiWFmkGMz_MKRw8bJiIEF7GlEjPybfRjuopadb1jucAWU0tp_mXXlaV6p1UpVEhZ5b52NZ8GYNzAOBNShj30iR8l8_vVCG7nxhsA-lfNOXQ_ihjCR1j4tq4qQ9boVTxsZ9rU8jIXyf3UmNfXQpB5DWz_GqaUI487V3pwB4pIbrlu8hwSJcYG6L1AM5B1Dhyrfce5nWX3irJf54UNtxO9SPzqIRUwHpO6G_srvbu5BiTFjuki_G51EjUIrCk4lUh85t_6E5Bhe0E7kbwwhBiZqqR1_Goxi8vR1f4fwLMGx4ERDcr3hUgp9hprC4xAH8bgJrIa45LzRi4xh9E8oIQQliI5IRIJ0hCeyTe6pxbFaqXUVJMHctsrYKir7gCpB9St0odu_2TDUz86QyrobXo-8HVc2ZwA5_83SGWsThXFGuEcjig0zIBdm6LFMlwdi8iI77t0z7MS3X-bMnTNOagNZBypJDgB8G57z5nFxnT-f6LSn78h9VrwVgvXTjZ20hDupcwMblHQaWL0x1KrVwShoL0ISrmAvvAomsAPT_IrfRcpta9PnNPTJqjG9_J0s33q7bsvy6xE42I6tQdIn5BPZvP3tOkmxQV7n6q_Yw8u4f9VUeUEfYSsEcfxX0Gt9op0zVwg6RfYnTnQTfTAtJocT7vD7j1fTvZ16PmxtXq-c__Te-rF6oykey5sW3HQDU_3E-DsancbA2Vei1mlBPvS6y_Vl9ZIM1FaAx8qAICVgD4aNCA8qTI4=w1227-h918?auditContext=prefetch"], desc: "Efek cat eye dengan intensitas medium, kilauannya lebih tajam dan memikat." },
+            { id: 6, name: "Hard Cat Eye Chrome", category: "Chrome Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_ESUdAO52tHiV9LBY5chwYKZhLgXjvzkm66TyAnUZXWmCvyVRr0VDhTacIIrXcpIoIRWChizjceWo9F5wulgSD8NtZ_s6oK_JniEqebmNZML__JJdI_EpWIy1zHxjiiI-U6B75QDadHh64TvA0xht266XCej2vppPFQttVBHQrKpPvb8dTeOEb9Mhl8gA5QglmB7ELhmZUAzsDODHYML3fRxDKUgwM1k1nZ1UkdVvY2P4FaGArPHxvaHKKQ6p4G54S-51EzE5378yyRH7tFyYsMGHAAWfWFWQ1EEPQkPTVcq6XlF-e-52Q22imq9e948Q4g8V7vvDPj5NzCu4HX2U6C4BiEx8rN0LKjLV38ozaIOLQL059FXKUWwQZRWYCUgCjl4_DiVgHi7SIgSzUEvv-ogqCBRKECpDMMleTqkw54cwuSQRniEr2lt8TNkhMSeHUz8v5MnaiouBTRVyGjq41RgLNlyl_IVwnq_i4DKbt5XyHQQLCHqTvpCLUkMQngp1SZgHIfaWkyBQ-JaTlkx1xHoltV0Qqnuj62sn4RvVfRAWPOBXL9kTXN-E7NTOKYUz8mJYFjrlYWrzDrkmwrnViVYO1dLxsMwJb1CAXLSGasdPkkQv_eVxfE99qRHOvKUb5M-9Sdj8NKua4SQJbPvJ5hjHWbpTlYHMsunxC4F03dSTSeYCT57d1BcLSnbYkyHIpB9vTTlCVOQEZHdVFIYaGNlormU_veVeXueRFmpbQ6_c6FwlLuY01vm-DLcvjb2PHKS1585Tgtqlkmr17yqNwGon1ScPyavC3VUnY79-i-63xVqCDmSn3LTL204T3Akr9XJFQsGd1E_2URHn7VQ-DeuFlmGnNY7ZRhKEFkdCzANe5Dy0tJymXm_nel18nyWhbbhvdQOah3zjfvTR4680e4c0OgsxG9Eo0Sgp-lT4pmZM_A_c5MXEVOc944qaROWgeU5Hrudf_SBU4WyjCMDsE5R5jKniiQQFEK7YwHpDptw6SFABf5kuY6h1GT3tXpVrb4Lkw934KF9Z_gxc4Fkz-bzAInaRJOskrRVjdiTokwQSV0gmy-zOAyucM=w1227-h918?auditContext=prefetch"], desc: "Perpaduan efek cat eye dan finishing chrome yang futuristik dan mewah." },
+            { id: 7, name: "Hard Cat Eye Chrome 2", category: "Chrome Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_EQCKjf2vPNTjjOESywGYqIfUk3uJTBov8KfrlXuggfAJd7lzZF6RkxaM54XU6Bd2z1S4HT5FCDFsumWOLt2K_LfsocwOsvpgU9-AJ9-sof5_c5q7jmjIBrnJSRT_HfmJJefI6qksbJJkDRbIxHzBrJxL4Im9RfaIxoeAZFhHqGyd4C5j14wwt6xjfYZ8xmW8xOhB_cEtF0UJKwFf3gYBV1zzKzlPgKOYaDo7lh5i4NBKZls6qJRoTVy1in_5WkNgZ2GQkD_nJfGbWvwlVi1-OqZ1RjY_StMuQK-WYAZacy__VFP0rps7R3P8UAslhVUgnpIqpkD83J96tbo-5v7bKIXyS-31nkyskyZuZozaECve98vImmKFTiD_dRZ3WLhXSZmp5RYeNtDHk_yp6JKZiBq42IM1E-b9oSW1e64CbtfBl0r_wzfxJfyZ6bLIRlUIDrLWipyteoMMssSEM8rMnxP5QHzdlxmPy7nbgJulWFpNnoLTo63J6zfOJnxgJ_isf0UsevgjmpRKrjDl2z65jiaDooHcmLBv8wLlPFSzEerHbuk0QmE7L2TXVhOF1r8IgizwwZt8ijid7C9XZFUp1T1P8F8mt6QHfLCNRUfwLso10Ve40yDZtqRnjrKfG_JOV6Y_6sBOnK9CETKcGdPra7dxw7vK-hBEUKUbeXa3VBe32GPkiR5Q83U21GpbwW_e6RDS3_wxZ4hNEBZY4S-SG0R4HY7m0_kxkrzt7r9hxZ0-JhVzviLDE0ROF86ozjJW2EqbWc2BPWQsWO2iJnQUCJS8XB07FAryhmNlIZhPQRsuYJpi-IQwiW5v03o6Avpec86OeYdTnznjuJp34JEa5vbfhaGdx2fYmKsYVnZTR7A-Y-TO7CqSKjcmPT1SJSsDxbcv3Pneqq65dUpsXcboQx_1wNVpzj3oZqFjvRvmq8ZwQ7DLwf2lyyhcmPKBMYLZwzE-bVhz23qyiUIU5nkrkkkbkUMjOUjfyVUA9bJWOD0BHFhte5fZjh9ivYVomKWN3rjB-gnqmlySN2ntEpC1DnF0MUATXC5Wg6xIf81rUYSDl_o94AsSCtXw=w1227-h918?auditContext=prefetch"], desc: "Varian lain dari chrome cat eye dengan tone warna yang lebih bold." },
+            { id: 8, name: "3D Art (Simple Chrome)", category: "3D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_F9b8YF9zz7_niYg9oqFJ1feuVSg1Ft6MyCHJ5AK0ryNyllCUjBT6l2bbK6c-LkjmhUlWPxpr3dNSxOODANWo5e_PrvQ7b0fUXoQI_ulEplQ6XOYrYR90HnNof8InuFWH7Wb1XZYsuAusguuxL4h_ZZAEWdbzbTDeD--y4gJH3o_yOj84DJ0RFiayA7o6ULI0ZV9bzWpvgg6xrRV8LOR63b7nE7_Qb91-sE2wcdQcpWDeOwIWXTQW2gLRHLlG6LLPPz7W_QQ4HgR1nBHjtdjgKG1Oq-jbQmF-193R-lp_KufakExB09lFPmzX0vMQXiTZr0WdnPcGc_dxeTFKweuJVg_5mIgGq3kytfR1mk13JizWlk1b_GuJ3Guc6rFD9AcrRSwJElHpiwpyhkhAEnazALl4oBZyHD9PU_9vpOd6449HAIuP_mdl6WMdhOzZKcS4otytpvmniZ0Il9tOI-0wAPnFGpidUlkIw82oaQhc5omg6EEZj_Hflpe2q0j0QbIB6CD3inUDjgKcrZlUSY3h2q_XxMkP8AQvsc1SD7SACyluHk4UWjaogEKHvVdGtLn3EVMqcpAgAfumV-sIyxg-5piFdWZimR9JZ2Eoa481mDZxK_KLSTS2f429QWhqOapuW-mLRsJKjwVSeTqfm23rEM0bIYRwBxZXWbJyAYDM3jO-xAgsJrlJTJBTh8z2jQzKCNiwSwEqdVQIsKjnrmjfK0ELRN9UFDaTWGXD3kYzzJT4fPu5JS5MKfgE0js8WSXXi4zxOIF_0sKtsBuvxdUIHQ23pPSvrf5KP_MvsVb5ysx7UV9CanU4NsMPNiEv7gyyblWVpSWTWOiauOYID8dEm14dX9-0jN2-_8Br_0QCRDI1hCaHUYte21KXQtS9PO0s9RHF3IAuDaAbfkB7Kp3LhQnPcAM5lUo2CJvgYjtys4FPKKc0BLvmWRs-EOWd9vfGBHiXzNQOloPVGhpOgUu7m0nIxl9B7bKlvJGoE1Ai73hPBevh4ia3yhMjzBqvBbCYiQeQQAymFE3PAstYCUvGoF5UxYNo8Ow_EZnG-UH6kLX4zCDy5AeFc48pI=w1227-h918?auditContext=prefetch"], desc: "Aksen 3D minimalis dengan sentuhan chrome metallic." },
+            { id: 9, name: "3D Art (Medium Design)", category: "3D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_FcqP9KjLLhYAXcoVyabv1h3SBqoUnrK4LyFDYhK-a2Qode9l7Rr8MDaPACjaG_1nt79ytnWVQ50G14phlhJBRYSbhArtZ_X9zKLHtyoZCe7sC-qFDHuHmTPsVRU0EqYA2uwRTlAvV6spYOg8q_MbAg-cVpJhi7Hj3fw5svVRQzeGm4Rk3MjLEvbf0mjL7v6jMzxxmmEHFffE3RA9ysg6guUMGfwNXvnycASQk2WVVzyvyJzFH56xf6T2XVLFKK85TyUKBBhpEuyCjLBlzI7XxGmVp90bnx6aHxnv8kCpTis4QkFRWATGjd1eyueCvNqBSheOccB0MnJmYN_fPscQX_0Le8O4D2mAPfJ7pwjrox-I0BQzsZOcjdwlpcD_V18bNCHshuGcfzIG8t9lm0V6eoXN4-5rNe3MsiC9JiauxhQy0yWMb8rfOfNPA6MJe2_Gs7ZiJuykZvYojNxq5iWzj-iVTyFvmIpq1KCcKHLYEvrLYy6dpNU9kqgol5YR2K9E1y5Wtkxt--TMYDWHBUlD_iOB6ryuDtjcY_IqPaW8Hpmhcy0hXQlXshNiwTkqLjGL4VJxxNvaM9nJIgLVxKQbukEeo24H09YyZ-iJuGTn9HvW2SaP6-SjJrGemjncfGtWdyrwEoFw-5x7tUysBISmHrjOilOHXEqwFeVwzAt92Du-t9SO_tCwC5f1cXk2vcBYtG4Rzhc4ERk7iOk2rNIw6JVpYQOHO_e_DmjRl3qS6NFHdBsSoypjvDs1UjOxOe4xFvu4AAije2gg6jOQUv6M9xhqa8nKCYHAk_lKZwSu_VYswa-RDq9P0t_f5FBpxOH2F8uBsmaS65yrXiKhWmgctj31UMS088n6fkTWTr4EuCkZnYGKUw-23HEQp3EKP6EG-MCZwW3Gc6EoRkLNpnOvb-NrsSJSC-6l90v7Nidzo4TRXHZiXFC4ciH4vQNRsLuIp7GJygMCn17ozoWeGxxUIUy1K0JapnpAUbhP3zs82xLeYbyt4e2BvBfgAqU6f6ats7ywUzXnSMKV_rS6WGSWLsH6DEhEe6Uo_-dxILx3eWh5Y_QGMf6AUG2U8=w1227-h918?auditContext=prefetch"], desc: "Desain timbul (emboss) tingkat menengah dengan detail artistik." },
+            { id: 10, name: "3D Art (Hard Design)", category: "3D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_G_tqJqIYY4CTEgzPXJkAdYzSlHVHX2IJydpFty-jB9K2zQS8fSU9QvgvuiSRi1wk2AlpaFT2tWpQMVESdFcFRvz4MBRx9-gmaypaffzaoabmUC0JqiyRXnY9rjnE-aus9bm1zPgAbpJznzs9p9Ewx8PvbuhuGuj86VrscQLPJxrHUlYiXRoCkQ2qu20q4GGPgpDADTwPpbv4dJB5_gh9pjfWO3q-eyRoO_sttHDTE1JSDWxfdwzZKaHaUKSVAX6Z3OlbxMLx_Bc0AqBxcj8yWuB5KggxNn-pIvnrQljejS9yE9-jGlf3hkpFQsy1ZcKiwroUXdWGSG2qRCCVzswOOoc4OPXPxSdbwtt0u4TPQxl6zCu6kyBocSkxSofTs01LvLjzUKwImJU3PPkuDT8RmUm-ZSwNUP5A7hlrng3U5PooUz9f-UyN3zs8w6A9Q6FR9bytrE1i6OtplfUnfztLTN28Z791fdmzsKPypopwBtl-XGhwAjBp-qeIv_VAHpV8THNQcqSNNciieC0wyRGafrcHA31Uz3enuSwjXKGaByzsmVJAh3rFryRHisCprM_eIDoFMyaDA5K79gAd6Zgbv2sZGSsAxkxUpgYWL0CO-ruuK5zhk0VRwA9PlxHD_he8M0ZRJsWKFlrLj29soCY7DhxXw7ySXgqnSN9n_pc9GIbzLDQHDjgpU3RM37DUH2HPATqENSLgq1DMEIgxFFzKxahaUAjFZXzaEwqh2ncqySal2xZkzT1rpGNcniBaNRNIKRy-g0UCY-feqleyuU-d2PxmeVr0XncdTQZqTopa0Z0hYB7JDJHTdIl9Vj7_iXgaY0H1o3ax6oV9rOHqdciTF4xznUEcXNnjIvDGA3W-wBQewrLYHUvsAy1App_JxHK5FaHRrp397bxMreHQtnshbHo54tsT5aEylu4IwYHzYQ8RvzKvi546sqPIW9vnW-xduyG66ZX0IspwqJsTNGQIhBbzJ_IAp0P4C2PrEq9RQq0dPpvKmXd29ni9mjNsPSHEvbDt0asUyO9tsmyT8js5706JEMEv4e0M5GJ0ZkAmYamTN8chHMemVC1j4=w1227-h918?auditContext=prefetch"], desc: "Full 3D art kompleks, cocok untuk acara spesial atau pesta." },
+            { id: 11, name: "2D Art (Simple Ombre)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_GSUpM7qVFnta6IJ0IKpnEwAvVLP0PSPtwNbcULSdgMBFFDIXuJS93Ju55D7gEa3RD_a7oWByy56xGFNat_fA6R_ukHSqAPIqAyadkWOCSPBgR646smPW5kSb1_U3ViLbZI4iIc7uerJ2HVtOublaBilX2F5qOHdTerypOykGVqrgJi42JHSmdDs4SXo6wqeC6frqGC-u7AZffkBZ3xCggRrvouQ0-V8VCzgrRj748_JLDNnf9unsULhZ0E6jpWKEf_QeRJzVh-3FO10SAMiZu0vJNcgoGhzUdUL3z63FrogP34joDC-VHVCbFAoAs84ggkmCaqKhYR2sZNuuA10e5IVAWLOkv0ZO8AORtaVL8HSjTAYlmmcZ2AmBaP39j1snW94BX6t32hZsDRzyLxOoYzI2A1l7_Vj0OoWMFg8aN0acWs6aZW3BPbKmQkJM6qIl2QaciJGb9topGEOXwa1VIPyzG9ZOoOzaz_CuSHU0IkQMBl5p19JFUG61SHfpP51pFDERwAQ74FWBuGYjIceHcNJvO5RwDAyLnOiBRxXrbkx8w8H82MSeHq7sFXWN9QmrCLC6j885KCrdpQx03fGqO4UckGwfaLngTNdB00MLdEcGAAd1tGe1o07lFajA-JxrQAplMXi4R39ksyVpBCNqJC1QB2i0UdrcCQnVHksEt8YOa57yTw13WLeMpC5LGc20KUmxX4UByUBxWhl5Anf_TAzoo-2-gkgMUswCAvbWNT029igGCX47D1ywY2KWaD32CQhaGCLxhvw1Lt_l8CMtiIpqm1v86SVDMkZRTpgbO0kreD5UppzpmLdk4cdTHrxR5wLSq62TYldoAlIFv7ubcsV9nXDuB2y6mPpwO9lkKjY6K9sQgV5OxZfmh-zJTDDHwDJ0fpyYFBAfDr8lQsGYNd-pEwAR_kMQD8OYzdU42j7eObjrnUP4WIxlUkrronTQyuuFXxYUSnOESdYAh0C1cEsB9h7rsBtpYzv6bxW6YSOScQP_oxQSpRC-wIpe8gDUji3zJ28TorNCQGAheBELTXOUsm1-IrawdKPuTuHOaw2HG8PEmZOkAogig=w1227-h918?auditContext=prefetch"], desc: "Gradasi warna halus (ombre) yang menciptakan efek lembut dan natural." },
+            { id: 12, name: "2D Art (Simple Marble)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_HSZ1MOLSCLT-SM2a5vOcxrYBQY_WkPfJbSS-eER4NO8vXYJ2EPJ3DOSi9WrJ-2mEZ_i-4wqMkMH2wY8pnPSZKZHyg5ZL8b9D7C-VPygyI0ZM_Dl5L5dopRZoMhnKO2ATnb-F03EVV6VC_dvCnYnA2mE4RxuWGAAjItMpgV0vqQwZmY-HymjfXUwYY4Mg9IZ_v9iDZDsnGQzvmNi6jaIMkfmQycfLE11sBjSBj5TVvzCah8wUQOHMjX2wNldN4MhOO41-CYQIrgYbxGgskk8z2p1nmtJGiRimvoHf3U_rTXwp10FxAXGAqSIw7pXOkeMERGQdEMmhr8BqQL5Q122ToZVNMppWUS4ERU6oyOgWrE1b02hkbJfxyP74ckb18psQk1Fki3D4kB746giV-_ESBjk8ISgCm3wPZXBpEabOziSM9A_NUUz_SUAqZF-kJMdn0F3A-FRtenms4Hx0-LAKYnp3oBuBWhsQxHd3rhzuHHGi9RmJ4aGcyk3llWbs6PB-fDRNk7dyyFaq2pRn_dFC1HDv8oMueolStQP3OBs_FpeMtSFi-KAVokQxCOFsTi372zo15mV5A0KRaH5BH8QrjYgVNTogeiXraUwskGdeGUWkKaK6SV_FLaLoue5QRAT32h-ZGSkO7lnw7Ls25qtw4QDH8-xEaAtt5fOdeHG-cbp_4GZC4CGp9B3XQ891b-ktp2pN8q6L_AYW3nZtjR33rHZVrdLNtaIxKDVhyAo6KxrFNDibdy2Ip6kMKz0kT7DrZsaGN3LFJ7A2DpNBhegfgrXj-ehpTOZK6c7jwie9cZHSTlcRy5shqCVdWo3ECJta7bUgitUy4q9YWiPFsu-xAdCq2sKoooV-ZhDOfIQSwF5rvBvxOaE0unlLZoe_Vk91xaZeS9evzeavC0NfqZusQaaIdOgOHp5yD5rNbTXEO2HHEuf1EBuxoYRE_CYuW7r1sG6cJrqgBdwY_z1ZjzG3OX4d8aDo7i-LUNElio3x2Nqvfb6ejSzoQ4b5ram8gdJ5tV9dZXjMgax6WpAxtMzeXBn3TP0VOw4J6hT7I1S2-5igTHTfw4Fzlqdw=w1227-h918?auditContext=prefetch"], desc: "Motif marmer (batu alam) yang estetik dan elegan." },
+            { id: 13, name: "2D Art (Simple Marble 2)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_G20_kcu05qdM_tajQXgIbBpE0vdrYmYGMvEHq1L670T0zTI8Z-oJlaYCv0xOIfL831R6AOMZvttTzOsQZvTT9hMJhzlTT5xGVOtEsMZx9tv9Tj6wDx2JubW1KqL5CjaStzB5jyOqOkMogwSoiwjwHa-rD3poxLEFFzjR3m4C-deVzubSyk2bn1G-th3kyz5WZNGOfkWEst1q0AEGtL6VFXLJu_qah9tBZqgS2lC_SJX4TPDY2pWCa2ljGyRKz7EDsm7LYHN6ip52mLSlTRpuNah67BmbkFG_b_I6WCAc6i3W6GVjaPQTMRIpth3S6m-uhMD8wh5dVlSX_0rBfInD6R9xvWiDxIHFUjp5JJ2CvBBZZNhnnA_oBkW8NyrkwF2k1ci0FNXtWmSQg5BQOSTA1daXsDZDrQrzX8J1H8YziSoSPRY-36l08wtfLo3TTNYHApzKcDUxvUgHMghg-3Imr2lfA1g3IdsRtZo9XtHSsGmudjExkyNpv47Hb-xHXq_TC5F5_pkcqY6AeefhaPkAZPTCN29iEsvo-02dFzm4-hsdz14JlDNFkQxr2j1yBupY3IBJTF3Eowxeal5HxhUgZXDPft99aEY-cDm2UuD9AqpdayYFBV6pGPmrq-yD7OvR-uxxNlGX6STpV9nsev8_2J_adQ_HxTLifkW4r18k1rZwz2Rs9quIUboifZbTpzDX5WZVOUcHtFuyY6thme3PFw6hZTsaraJdfuHfk0fDfpmm9wZLt3VhwXkjRPMZjovUEKoG3CfOdCxcMzLKIk2BVs7zIQjCNUDxSiQ5Z45qzz7yHstY-yXMXJJq0K9E4iBqF__7znx-trQGPJJH-8lggkfswWTGCdgvUAJ6vN9bdE4HWscF6yyVlGK6AobumEurByFQg9UCAnlc6tEsiYj2IQ2ReWswhCuX3nzB8xHt9EqXM-9iduOgKCMtTMctS4m2p-FhuiC3Tjhqz4XIx5nrbqiYMNZOBLDS4vKpHpN4XddnybI_n5KI0I0JHcD5w1j-WRBDwLyuXssHqgu5p-q0LA883P9exMzvYR8iCE6XxI65DMN_tisVM1ZfA=w1227-h918?auditContext=prefetch"], desc: "Variasi motif marmer dengan kombinasi warna yang berbeda." },
+            { id: 14, name: "2D Art (Simple Glitter)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_H-EkdV0OFn_qty97xYP2sfhuCAUd69jhtdHNXuJsXiSEUu1zkx-wNnd9LJkDiX2cWWccGfm2dV96IXCmwwn_8G_Db2WeAwWaSZsAuwcqctRV56sIvcqC0dpTYqzY__q2Dba6qWuhYs4Tjy1OUyWEiKoS2XArEwGIHdBKaPsLXkwfyg6G2aMclSDc8WlzUFlfXv12bLIik7DFz51bM6DyeTnfX5LP8nNaJt4y7jCWCMvwA31FplpQUrBVbD3mJ-phh2Q739e80PPs54ONUGkOFLfoZY3suZjOTBGqBlOlEsnLss1oHqhaHFz5Soyku_D2kYkV49iXVPKyagx9MkOdHlpntOJVQd0WEXZCU_EhIzOIq1bHBkXxRUD2ap6e40yeMxlE_KRqkEIoW3ETGH-6U3L7V4KELG76WDag5StIQHKZN73rXu6fp1sZrch3-eHjPqfeAfw20cIMEt-O8ofmfdz9SS6bwM86Bo5Rt97P8w7s2ZA6uuok7NnBXnpVb7IeMXODcP4LfQL-EPGJ177G8SuuWvgY6hhxuV8bqwcUFfqVFpX9M1popvC6Zn00sdieVk9oWx0wVPjjzeNFHlNo8mvpXCbQpOJFtuYPtGYYWJq_PBIm0AYituTD_K7bJfn4bG7FWkuAHNjKxL62Ke-J53WTkcJju3jk92yqed-Iw3UYfuxe_5UR5lGr7lQRIZE165WV5OlbZIlgiS8nXT3m_3Jxpib-4Ozy79lUgUA7YSk_lYwWOGKypMr3W9qgVGFauSTwggtN_Y7Y2gqcLZTsRWJzYgZm56slxDKapTfsCOJe7nq-YpVZZLnwjdO7AlVrFbP7eb_A5JnrlLxSFMTUHQqzPpP8qLyhe7gvAOP7vbrwWxWyjic2Rn7smR-HFkuYSRyALlbpIhmX7iVRAchfvLzsY7uW99LfCcMVSww7-0tG2gVXywjpxfRwKrmvESOGcb4YzZn7fyNxlic0NA44mMQhd5WjakbA7T5Cs7Qlz3YIS0PhNoKMDsQNPfWxEIW7jfJaPdL4mYjzSV3gmpx_0t6-Bb_QHHglhvaLZroIwjo8Ty36BsE6UxlWI=w1227-h918?auditContext=prefetch"], desc: "Sentuhan glitter halus untuk memberikan efek sparkle." },
+            { id: 15, name: "2D Art (Simple French)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_GCWyc6bHFZTwktPgSOmrD4BfVLprelzxlxRId79cyji6yEw9kxwuY3sXo3BC9gC8p01iuEOxuZOAfDSwybpDm3P0mXW82KyHHRI9Nt13aeCtqrMbS8BOWF-_PQv63gxTFVS82L8F7ehN09_wOH589_clrPNG_FFm_hr0I1U40z4os4f7mqeFORdvmRRE7IrQSn18fZ4UzwetYM3Ksq4SZ_p_e-ytkWtfXdRjpPxak7LDV_xKpZGxGdeC8zpeOmLLoIpzToBNeVYKsIJApS5FgTKLxapaPMYUG4cnLVTv12EbttIUBn_7woSJeYAcKNa3MteOVmAvcs9B9gKt7wE5C_9Zi2EWh_i4yk9CH_aBn1Q8hsr0BCu_mUGWeF8jsEdHrJY5VYokYMX5uaqg1OhkegJ5DgKwgGCSD3AB-mcoxdKV7Fi33t-xUampYmVRgRZUzvGKtDotQRAaW3NC5_zn22EHVasjGJ-vUddq0UlSXvSOxRmvzIkO9fV3kNomUWy_9Ip8aucdpbai2NQkaBwZEWWzGN90ondghgTcyprh9piOuvKD_QPIlgnlM4cgEDJf_p0PsHm08yqwjCTt-btUS73Sl_nv1YMnGdIXkYR1Ah2fMZHcEQoRMYwLUKxBHjre7V4rMH0MZANW3Xo_qr0q3jIInFdO48NFgWI-IRE0FOa8ADgz6gYJH3B29mKwQXOZK1hxmW3wvcWFUjs-D1_EbYyKxfNjH7kKSqsfoiPntNRwO_4EorhcOMXIw9W2dDvfDdJMR3yq3Io_Ms0icXJTmlB4rMhziBZNaLBIcONWiG6NQok-7cO3VQFvixOA8X4jTYwN5-PaTm7aZzSzS3D4j3awG28NmuNpIRQ2rgaT3iK4khl872nHojVYrYvUa4hh5Eawgj7bQzjQ4QiReucuY0cccT8WZJHjKJTdW4GH6kNRbP6TnQ5N0TOkpvzhfoMFlmaCNuwcgU9P2mZEFbbyWsNF4Toy3cjkXCI6Hdbfox0j_lm36KrQ7R-CefeKaHLhCt2PzYLpi4J726ckAyWa5KqLHJ6nyRk-91bFWsWpBJO91Q8Gifhl0HvAM=w1227-h918?auditContext=prefetch"], desc: "Desain French Tip klasik yang tak lekang oleh waktu." },
+            { id: 16, name: "2D Art (Mirror Chrome)", category: "Chrome Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_EizID7dKnZ3gzNkvWnL909tEWs1dqjjTd2fA0slVmG5uCWBAJs3lG-cN1mFE-K4pxC5ShBKKazH09kxCUCf-KK0itAz4E20-TuScyQkDojsOp95vnn_uTt_wqaRNLifBPqYRG4iTAh8aTpDd8kQrPtfQsRVXjlAErlneboyDTfS8SOW1dHxftdyFVg4hCf0_02TYJRFQCiNl27ihYm9Zh-cd49u7RWFo1bwWtMKv2E1REwMlk-xOMG41xtbzzpLPgTInGIB_ekix26qLDCiv2DMXkkeLLo39H-8DMkPPQI8njDnxOoEfpHP17S73MknzzpeoToFBPOQIEJ45HXOwvgVN2RdU8Z_f-vKufufGkfPGrIlg74Mii9JxYgaH7qmqr_YaE1K41KpdvpZ_uhNsetgj5_3TIh6zPpHkz6bbbq0avgdBbgWtrH0pdAtFuY3cEbR-gkuwIbTqfjIl17tIJtVCXi-YdbZC-njyVFM-5on7GgsQtvcvZsz_ZIt5XaM6vUASl3RfLHtWajbNzSjXhFjU85C1o5QzmlPOe5AjDl1p6J6WDaguGwCFnVPDmYr11K-4S_dK_Rew8cmG80nYVxCsMbmmCD9UEe8yDu2ChdgaBRzRr0iEjYE_fXHPj4K1TcjhTmJXcCb2LACt6xnb_daBcpTGSXbTDeL-Fgq3uB9WcZOqKYrAmLxm8_Z_EeSkJDMyXgMjfqki4ofiYcKr7xlSpvQnmNQUdoS-WZB9-KiCkPf1WIAflOwwRpNjETe1qNakFcVjVzbHGivTTCXAQ8veadbnumGDhWwW4ULVPSoKQzBXKboMOeR5Q_WgQsc_3frYCbC3fSRqv7uyjb7azv-Ch4aTi1rmxrMoFMeHtyzHdc9dUiuUDim1ODvgtkeoXwqwvurDVzM9Es2yd1blCmReOLwggfQRONFxBQQt5ULu2xjlOav7ZoolW5MdKYkxEZURS1FiFF8ZbHaeI0RDTVajlyDxH6zMkBlvmbEo42Sx7GnlBPJ5tQYQL-gNi61p6T15IhdFpDcvf9lZOJgzb4BY5u0w5Mq9mqHlpmXcy-GGa4n7F_hJUseg=w1920-h918?auditContext=prefetch"], desc: "Efek cermin (mirror) yang memantulkan cahaya dengan sempurna." },
+            { id: 17, name: "2D Art (Medium Design)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_G5Zt_KKaURwInjIoxup-MJmOjoVsPRUMzvjVu7kEa-W8nVOITa9AFB2WQ3vnmu52SAdbzTuUIrG4XnhOM0E6I1uaUUFK2FArixUo_IRyz02mWmCRuLt2o0h0WNX-h12zwb_0UfENLh3ASrSS02I-PtIFZBK57AYdgEEa5-fEiSkfQAurdTD8pPySDTWwf6tNS1XYae3VNkceMAnc0tDVRPyPubTG8L7wQUCxsOycrC3C_zLNtZ60u-VOttbk0dlDRWsU9zxt8aFHui3dSk52Ja4fwEHP1NKWt62Dn9qzn6azDG2977d7BFKkrcvSQ5Q7iDfu4JNFKE7Nzgo3gLVBnsED73QxcLqUU0pY4xDhvYiQ2QEaYDOIlikc7M9WoDrtuO_Rpp-xOCY7bmpU3f6GyiswxT-8San29BL-BVG7qMuNV9IRwPuVg_F-cfG0LLI4-H5Fw7FZay7s0340RezEb3eDY6ew_m_FH_MhotpChSxgOmN51ffMl3zHAAAqT7ndkLbQZiieIlcNpmuJq1WKd6J-LqAkLLjvbaLJ7IQKsY2LlYI9Iu2bYyjCO0AWGMpk_lcKvYqeiYzpuAlPbNU78GT13nuy_lStcp1G7eaM2Azf2NwobVUUHuh4_9cXNL3asiqaJtCa0v8ZeBwFV9ZvGsrckCk3HuVZbfAt6iH0z4TfajJ5NeXdrBqXyZaNZ8pIcIqZ-D2XwD9i-JeEIHkygYjJBRR0eQ5Enommr-O8BtPj4-QcDSjoOrLSD-NpZsCUYR32Guz_1UUKMEy_A3wAFM6JRsDCfkPUDftEglYf50B0At18v2B3KtKDiZFCGiFL1L0ePrzsX7CdTvJwGEpzvMC2Qd_aIbDhA1Kmlvgvn2kYjbjsGL7WQ4lgER1YA0nJUF23EluIk4479KzV1o5ovB02394gbAWEhV9_HpWN2aG1Ie03IwrdPzolSCNyzWME3VsIhABUcP6uw9IzbADm60TvF4kY8otBckHJ8EOsX11e9QPI72wat8JvXGWoCZ3PD1Y4f8jt3a8ZZvo72DdrulDscgRgw7xl7L8TGwaX39v1fo7mF44CBnWv0=w1227-h918?auditContext=prefetch"], desc: "Lukis tangan (hand-painted) dengan tingkat detail menengah." },
+            { id: 18, name: "2D Art (Liner Art)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_Fh-W33-B-2_uDRTGmMoKMn9C9xfBcL2U5gYBNBqPDZOUhLBuzsNDpdoGYKx8r3U3d7K2XW7UreuybEf1VjKbC2kPRrGJCM6CxAuuI0-9jothLBQgN1GueC7d-TZFc59Br2rioSYR1O9w23-DhuzFRi2H8_b8WDHLQ1c2rXStmBgUpI_NKYHflCdMdlUqSosXXKzCyYjFWg8COdSsbTSA89ILy1EpcKU7K2TPlXGK7x-eFPfD929_uUWwuwmqMmItUCIyxfD6nnwGJjqi4ZnqKd6onybuwPCbZp8K33Ciq3g2zOSfXYtSkVvxL-WvKyDIAs1QKuhqNXXvqX9j04UpEmOIz6hLxa6g4DKJ5QbC3fFMD1gqMSWoHDiuuJV2x-Ue1T4aJ7J80p2pRUJj67rsEO6TlN4ku54nBYKZ6b5ccdDlUhOVMUEbzWR-d-E_l1S_w-BxYpE3UQwhU4oNdSNuwckuoAfPzxS39cB9MURZidEl87m1Gd_TNR3qJnbc2pYNFlZBboxXziHDpBsT4FmAlP4iHXDBBkxrE87Y9fK_2kXkm6mZdvcZVBdqzHy5FHdJ7htse_uNvfTU-Li8Vym5W2rczPGfSpGdCMAfHYWDQYsEVCQgMnzR_bdfIf5CYGowicd8O4XwdUh5WeMkurAqaMexmK9nL8mvsnkzO75SmBcKULWqi1_GlPzoYPzIyQDqeukpZg_5Wx3jVpuuMFe_PZr2uphnHAIcWoYit9Q6HIDABHmbXYq72uCaDPDkE7ruPlmBGIVZSmC6VsYwGCB4HRKFtaMfT7AInd7q0FjRkNa4veuJwGYgZgyL7t0l8zwfh7OuswZNG9aJJiNkrE2Wfc0W6UbXFWYdHfDtPjnr9exe81BkcxL_59CQ9prJoH0NcMYt9x0-62pmkOru1bsx_dTivB_KMyNkkwKMviKdSeknvE5ngoYS8M02WDiHKXY1HWMN6V-zKpssaHEG3G6J8ol2GhlfRCN08UjtZTg9KXGy9IqyMqQJmfNvt3RkP0ljpAd2Xq5Pz4VNP7-dWZGXJJ3oCL_AyvThyYZ2sXRzkLrc_wYqheKVK7E44=w1227-h918?auditContext=prefetch"], desc: "Seni garis abstrak yang modern dan artsy." },
+            { id: 19, name: "2D Art (Hard Design)", category: "2D Art Series", img: ["https://lh3.googleusercontent.com/rd-d/ALs6j_EdebA8loyWNkMCDIEmVwubMyFMY0uUSKPykAAEVAq7ySflx4_0SRkkVz0TC7ZJ8lfQMJL8kwGm0SonuMiPyP5fYaklc_3dy44Yl3Lto-FxxuM8VC_fxv4YtZZOFFPXm6Kh_F3NqUyOWFQ1T1cOxR4WLaq8H_igeKrkR1eh0_3FuJd_4UwZxXYr2XNAFM9U2ACckWLt9Wt4TxGwPAlBuLwlhmNE4u5svMLByj1bAi8QD3ESeqIG0iWGZENq2eUbR40gI31vFbz_51OBCIMXZ2BGPT7MxiT0qRbEwyXfBHZ4BR0kyRO4Xb0Wubg6qadcYLQ6J-XknKaxynnjace68SscLFV4MZsFErKeSpRLzSqLOq8OxkIy78rUAd-D_F3cFCCIX_X3vrQKhFvDZuQYUgAikTVw0jPco8zpBf-r4753QYOZLxa-lVOf0UGwEVvAEHs5-UViMJmxQIofBDb-dSq-rTVPaZUguPfcMhUIIJRkD8ycHUVwJN5Pb5o3mxuQGS1LqPxieZl8Pnn07s_GyhkZW0VD7_bA33xB2B20x49-RHQNovKep3RNsEGA72-fCrhH_sf6BM0w9zeYUIYZiK2Xe-nVI6P6JqkZdZlG7Fk9fFEZ_hwPHIUD9rNHXeUVbM4Akr0d-_YL-fsxE2VifT42udME6YSut06yLZv_cyounsyQY7gwRPmKsJmCtPeSDrcs45dchzbbNAcnVL2OadusOc16w5yRd5qfyIBklo-hG2H8l_7s-fLi0Ub4Rblm_k1b9yIKHGFYfNT89vDzrCGsd57ltWTbyiQKV89Dj4e4MnRIuRVINXWqcD44Ocy7T4F78gbbFiXhOG-a725S1ZsIErSI4cp0zWrHfH6Pn_e5PkNs3TU76zp5PIdmomBdkzcEVV-2UerpxFujHXLAaibSvp5woM08KYRqfBhNwmBLcJmjGiAQLeXDtKqib9az2REib4HWVwnLrkuPbVEiA2LHk-0GBqOakkW0YI3zsAeXTtJ-t3QF87IKS05tu9pqKc-U5byItaps3aGq_9BCZep9HrFQ4WzYm32xSl8Mlnr6SWHGPHSDHrYM0kU=w1227-h918?auditContext=prefetch"], desc: "Lukisan detail dan kompleks yang digambar manual dengan presisi tinggi." }
         ];
 
         const grid = document.getElementById('gridProducts');
-        grid.innerHTML = products.map(p => `
-            <div class="card reveal" onclick="openModal(${p.id})">
-                <div class="card-img-wrapper">
-                    <img src="${p.img[0]}" class="card-img" alt="${p.name}">
-                    <div class="card-overlay"><span class="view-btn">QUICK VIEW</span></div>
+        
+        function renderProducts(filter = 'all') {
+            grid.innerHTML = products.map(p => {
+                if (filter !== 'all' && p.category !== filter) return '';
+                return `
+                <div class="card reveal" onclick="openModal(${p.id})">
+                    <div class="card-img-wrapper">
+                        <img src="${p.img[0]}" loading="lazy" class="card-img" alt="${p.name}">
+                        <div class="card-overlay"><span class="view-btn">QUICK VIEW</span></div>
+                    </div>
+                    <div class="card-info">
+                        <h3 class="card-title">${p.name}</h3>
+                        <span class="card-category">${p.category}</span>
+                    </div>
                 </div>
-                <div class="card-info"><h3 class="card-title">${p.name}</h3><span class="card-price">Rp ${p.price.toLocaleString()}</span></div>
-            </div>
-        `).join('');
+            `}).join('');
+            
+            setTimeout(() => { document.querySelectorAll('.card').forEach(c => c.classList.add('active')); }, 100);
+        }
+
+        renderProducts();
+
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                renderProducts(this.getAttribute('data-filter'));
+            });
+        });
+
+        // FAQ LOGIC
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.addEventListener('click', () => {
+                item.classList.toggle('active');
+            });
+        });
 
         const modal = document.getElementById('productModal');
         const menuBtn = document.querySelector('.menu-btn');
@@ -481,22 +615,43 @@
         function openModal(id) {
             const p = products.find(x => x.id === id);
             document.getElementById('mTitle').innerText = p.name;
-            document.getElementById('mPrice').innerText = "Rp " + p.price.toLocaleString();
+            document.getElementById('mCategory').innerText = p.category; 
             document.getElementById('mDesc').innerText = p.desc;
-            document.getElementById('waLink').href = `https://wa.me/6281234567890?text=Halo%20Reinkarnails,%20saya%20mau%20order%20${p.name}`;
+            document.getElementById('waLink').href = `https://wa.me/6281234567890?text=Halo%20Reinkarnails,%20saya%20tertarik%20mau%20order%20model:%20${p.name}`;
+            
             const gallery = document.getElementById('modalGallery');
             gallery.innerHTML = '';
+            
             p.img.forEach((src, i) => {
                 const img = document.createElement('img'); img.src = src;
-                if(i===0) img.classList.add('active'); gallery.appendChild(img);
+                if(i===0) img.classList.add('active'); 
+                
+                img.addEventListener('mousemove', function(e) {
+                    const rect = e.target.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width * 100;
+                    const y = (e.clientY - rect.top) / rect.height * 100;
+                    e.target.style.transformOrigin = `${x}% ${y}%`;
+                    e.target.style.transform = "scale(2.5)";
+                });
+
+                img.addEventListener('mouseleave', function(e) {
+                    e.target.style.transform = "scale(1)";
+                    setTimeout(() => { e.target.style.transformOrigin = "center center"; }, 300);
+                });
+
+                gallery.appendChild(img);
             });
+            
             modal.classList.add('active');
+            
             if(slideInterval) clearInterval(slideInterval);
-            slideInterval = setInterval(() => {
-                const imgs = gallery.querySelectorAll('img'); if(!imgs.length) return;
-                let activeI = 0; imgs.forEach((img, i) => { if(img.classList.contains('active')) activeI = i; img.classList.remove('active'); });
-                imgs[(activeI+1)%imgs.length].classList.add('active');
-            }, 2500);
+            if(p.img.length > 1) {
+                slideInterval = setInterval(() => {
+                    const imgs = gallery.querySelectorAll('img'); if(!imgs.length) return;
+                    let activeI = 0; imgs.forEach((img, i) => { if(img.classList.contains('active')) activeI = i; img.classList.remove('active'); });
+                    imgs[(activeI+1)%imgs.length].classList.add('active');
+                }, 2500);
+            }
         }
 
         document.querySelector('.close-btn').onclick = () => { modal.classList.remove('active'); clearInterval(slideInterval); };
